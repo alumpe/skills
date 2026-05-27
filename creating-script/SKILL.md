@@ -85,12 +85,22 @@ For scripts that use the standard hr-manager-service DB setup, prefer this shape
 
 - initialize MikroORM with `runMigrations: false`
 - initialize Mongoose
+- keep database bootstrap in the top-level flow of `index.ts`
+- create the first PostgreSQL access boundary in `index.ts`
 - run the main async function in `try`
 - log top-level errors
 - close resources in `finally`
 - exit with the correct status code
 
 Short-lived scripts should clean up connections.
+
+`index.ts` owns ORM bootstrap.
+
+- if the script needs PostgreSQL access, create or obtain the `EntityManager` in `index.ts`
+- if the script uses `withDataSources`, treat that top-level call as the request-context boundary
+- pass `EntityManager`, `dataSources`, or `context.orm` into helper files explicitly
+- do not import the global `orm` singleton from `src/mikro-orm/orm` inside `load-targets.ts`, `apply-changes.ts`, `output.ts`, or other helper files
+- do not call `orm.em.fork()` inside helper files unless that file is itself the top-level bootstrap file
 
 ## `index.ts`
 
@@ -131,6 +141,7 @@ Main flow:
 - keep `index.ts` focused on orchestration
 - initialize only the dependencies the script needs
 - make major script phases visible with concise progress logs
+- when the script uses the database, initialize it before calling the task-specific async function
 - call `load-targets.ts` when target loading is non-trivial
 - run the main script logic in its own async function
 - use a concise task-specific function name
@@ -163,6 +174,9 @@ Do not put target-loading, write-execution, or output-formatting logic here when
 - return structured target data to `index.ts`
 - accept explicit inputs from `index.ts`
 - pass services, data sources, database handles, and target-related config in explicitly
+- if PostgreSQL reads are needed, accept an `EntityManager` or `context.orm` explicitly from `index.ts`
+- do not import the global `orm` singleton here
+- do not create a new request context or hidden ORM fork here
 
 Prefer explicit inputs over implicit config access.
 
@@ -230,6 +244,9 @@ Base checks:
 - logging uses `console.*` statements, not a custom logger or logging abstraction
 - logs make the script's major steps, skips, and caught failures visible for human review
 - output or logs are understandable for human review
+- DB bootstrap stays in `index.ts`, not in helper files or task-specific logic
+- helper files do not import the global `orm` singleton from `src/mikro-orm/orm`
+- PostgreSQL access is passed into helpers explicitly as `EntityManager`, `dataSources`, or `context.orm`
 - cleanup and exit behavior fit a short-lived script
 
 For mutating scripts:
