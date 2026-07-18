@@ -40,6 +40,18 @@ Do not narrate straightforward code.
 
 Do not use comments as a patch for vague names or muddled control flow.
 
+## Visual Structure and Control Flow
+
+Use whitespace and block structure to make the main flow scannable.
+
+- Separate meaningful phases with blank lines: setup, validation, main work, fallback handling, and cleanup.
+- Prefer braces for conditionals when a branch has side effects, multiple statements, or an early return.
+- Avoid compressed forms such as `if (condition) return value` when they make neighboring logic harder to distinguish.
+- Replace dense ternaries with explicit branches when both outcomes contain meaningful behavior or are difficult to scan.
+- Keep one logical action per visual block; do not add blank lines between every trivial statement.
+- Preserve concise expressions when their intent is immediately clear.
+- Make the normal path and exceptional paths visually distinct.
+
 ## Documentation
 
 Document exported functions, modules, and non-trivial named helpers with short
