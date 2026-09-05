@@ -1,6 +1,6 @@
 ---
 name: codebase-design
-description: Shared vocabulary for designing deep modules. Use for focused design or refactor work: designing or improving a module's interface, deciding where a seam goes, making code more testable, or finding deepening opportunities — or when another skill needs the deep-module vocabulary.
+description: "Shared vocabulary for designing deep modules. Use for focused design or refactor work: designing or improving a module's interface, deciding where a seam goes, making code more testable, or finding deepening opportunities — or when another skill needs the deep-module vocabulary."
 metadata:
   source: https://github.com/mattpocock/skills/blob/3cca18b368ae95cdbdebbff572ccafa662551015/skills/engineering/codebase-design/SKILL.md
 ---
