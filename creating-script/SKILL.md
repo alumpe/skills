@@ -2,9 +2,8 @@
 name: creating-script
 description: >
   Guidelines for short-lived TypeScript admin, data-fix, backfill, export, and
-  batch scripts in `~/Work/hr-manager-dev/hr-manager-service`, mainly under
-  `scripts/`. Use when planning, creating, modifying, refactoring, or reviewing
-  those scripts. Prefer existing repo patterns first. Ask with `question` when
+  batch scripts in `~/Work/hr-manager-service`, mainly under `scripts/`. Use when planning, creating, modifying, refactoring, or reviewing
+  those scripts. Prefer existing repo patterns first. Ask the user when
   scope, config, or output is unclear. Triggers on: "create script",
   "new script", "data fix", "backfill", "export script", "one-off script",
   "scripts/".
@@ -12,7 +11,7 @@ description: >
 
 # Creating Script
 
-Use only in `~/Work/hr-manager-dev/hr-manager-service` for short-lived TypeScript scripts under `scripts/`.
+Use only in `~/Work/hr-manager-service` for short-lived TypeScript scripts under `scripts/`.
 
 Do not use it for:
 
@@ -24,7 +23,9 @@ For those, inspect the nearest existing pattern and follow it.
 
 ## First Move
 
-First: spawn an `explore` sub-agent.
+First: spawn a codebase-exploration sub-agent (whatever recon agent the
+current environment provides, e.g. `scout`, `explore`, or an equivalent).
+If no sub-agent is available, do the exploration yourself before designing.
 
 Have it find:
 
@@ -38,7 +39,9 @@ Do not design the script blind. Reuse the closest existing pattern.
 
 ## Clarify First
 
-If any of these are unclear, use the `question` tool before implementing:
+If any of these are unclear, ask the user before implementing — one question
+at a time, using whatever question/ask mechanism the environment provides,
+otherwise just ask in your reply:
 
 - organization scope
 - employee scope
@@ -236,7 +239,7 @@ Base checks:
 - script shape kept as small as possible
 - run command shown at the top of `index.ts`
 - config kept near the top
-- unclear scope, config, or output resolved with `question`
+- unclear scope, config, or output resolved with the user before implementation
 - scope, config, and output are explicit and reviewable
 - target scope is constrained to the intended organizations or employees
 - target loading extracted when non-trivial

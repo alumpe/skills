@@ -23,11 +23,12 @@ Ask the user: **"Which skill should I improve?"**
 
 Once you have the skill name:
 
-1. Read the current skill definition:
-   `~/.config/opencode/skills/<name>/SKILL.md`
+1. Read the current skill definition from the agent's skills directory, e.g.
+   `~/.agents/skills/<name>/SKILL.md` (or the equivalent location the current
+   agent loads skills from).
 
 2. If a `references/` subfolder exists, read all files inside it:
-   `~/.config/opencode/skills/<name>/references/`
+   `~/.agents/skills/<name>/references/`
 
 Understand the skill's current intent, structure, rules, and examples before
 proceeding.
@@ -139,8 +140,9 @@ If any changes affect reference files, write those to:
 ~/Private/skills/<name>/references/<filename>
 ```
 
-Do **not** write to `~/.config/opencode/skills/` directly unless the user has
-explicitly set up that path to mirror the dedicated repository.
+Do **not** write to the live skills directory (e.g. `~/.agents/skills/`)
+directly unless the user has explicitly set up that path to mirror the
+dedicated repository.
 
 ---
 
@@ -148,6 +150,6 @@ explicitly set up that path to mirror the dedicated repository.
 
 After writing the files, always end with:
 
-> "Changes saved to `~/Private/skills`. If you want OpenCode to load the updated
-> skill from `~/.config/opencode/skills/`, make sure that path is linked or
-> otherwise synced to the dedicated repository."
+> "Changes saved to `~/Private/skills`. If the current agent loads skills from
+> a different location, make sure that path is linked or otherwise synced to
+> the dedicated repository."
