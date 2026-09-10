@@ -2,7 +2,7 @@
 name: coding-guidelines
 description: >
   Default baseline for planning, implementing, refactoring, debugging, and
-  reviewing code. Focus on clear naming, sparse intentional comments,
+  reviewing code. Focus on clear naming, purposeful comments,
   lightweight documentation, and modular code with clear responsibilities.
 ---
 
@@ -29,16 +29,16 @@ problem space, not just what it does mechanically.
 
 Rename unclear code before adding comments to explain it.
 
-## Comments
+## Comments and Documentation
 
-Prefer structure and naming over comments.
+Load [code-comments](../code-comments/SKILL.md) and its linked examples when
+writing, modifying, or reviewing code, including deciding whether comments or
+documentation are needed. It owns the rules for when to comment, what comments
+should carry, and doc comment brevity. Apply it within the task's scope; a
+review-only task remains read-only.
 
-Keep comments rare and intentional. Add them only when they explain intent,
-constraints, or non-obvious reasoning that the code itself cannot carry cleanly.
-
-Do not narrate straightforward code.
-
-Do not use comments as a patch for vague names or muddled control flow.
+Document exported functions, modules, and non-trivial named helpers briefly;
+skip trivial inline code and obvious local helpers.
 
 ## Visual Structure and Control Flow
 
@@ -49,18 +49,6 @@ task's scope; a review-only task remains read-only.
 
 - Replace dense ternaries with explicit branches when both outcomes contain meaningful behavior or are difficult to scan.
 - Preserve concise expressions when their intent is immediately clear.
-
-## Documentation
-
-Document exported functions, modules, and non-trivial named helpers with short
-`/** ... */` comments.
-
-Keep documentation brief. State what the code does and include only context a
-reader would not infer from the name and signature.
-
-Do not default to verbose JSDoc tags or boilerplate API docs.
-
-Skip documentation for trivial inline code and obvious local helpers.
 
 ## Modularity
 
