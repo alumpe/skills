@@ -10,7 +10,7 @@ hidden: true
 
 Fast browser automation CLI for AI agents. Chrome/Chromium via CDP with accessibility-tree snapshots and compact `@eN` element refs.
 
-Install: CLI is mise-managed — do not `npm i -g`. Launch flags come from `AGENT_BROWSER_ARGS`.
+Install: CLI is mise-managed — do not `npm i -g`.
 
 ## Start here
 
