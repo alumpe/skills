@@ -34,7 +34,7 @@ export async function syncTimesheets(date: Date) {
   const remote = await provider.fetchTimesheets(date);
   const local = await db.timesheets.forDate(date);
 
-  // Keyed on employeeId + day; remote wins because
+  // Keyed on employeeId + day, remote wins because
   // the provider is the source of truth.
   const merged = mergeByKey(local, remote, timesheetKey);
 
@@ -112,7 +112,7 @@ States what the function is for and who owns the destination's lifecycle. No
 ```typescript
 /**
  * Writes the report as CSV to the destination stream.
- * Leaves the stream open; the caller is responsible for closing it.
+ * Leaves the stream open. The caller is responsible for closing it.
  */
 export function writeReport(
   report: Report,
@@ -128,7 +128,7 @@ and distinguishes its responsibilities from the caller's.
 ```typescript
 /**
  * Converts provider timesheets into payroll entries.
- * Normalizes dates and rounding; persistence belongs to the caller.
+ * Normalizes dates and rounding. Persistence belongs to the caller.
  */
 ```
 
