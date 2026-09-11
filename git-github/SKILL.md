@@ -1,72 +1,58 @@
 ---
 name: git-github
 description: >
-  Guide for git and GitHub work: commits, branches, pushes, pull requests, and
-  `gh` operations. Use for repo workflows and GitHub CLI tasks. Triggers on:
-  commit requests, branch creation, PR creation, pushes, or general git/GitHub
-  questions.
+  Guide for Git and GitHub work: commits, branches, pushes, pull requests,
+  merge conflicts, and CLI usage. Use for commit requests, branch creation,
+  PR creation, pushes, or general Git/GitHub questions.
 ---
 
 # Git & GitHub
 
-Git/GitHub work is opt-in.
-
-Do not create or switch branches, stage files, commit, push, open PRs, or run destructive git operations unless the user asked.
-
+Do not create or switch branches, stage, commit,
+push, change GitHub resources, or run destructive operations unless the user asked.
 When in doubt, ask first.
+
+Use `git` for local repository work and `gh` for GitHub operations.
+Confirm the repository, branch, and remote before making changes.
+Follow repository instructions and preserve unrelated work, including staged changes.
 
 ## Branches
 
-When creating a branch, use `al/<kebab-case-name>`.
-
-Keep it short and descriptive.
+Use `al/<kebab-case-name>`. Keep it short and descriptive.
 
 ## Commits
 
-Use Conventional Commits.
-
-Prefer a single-line subject:
-
-`type: imperative summary`
-
-Common types:
-
-- `feat`
-- `fix`
-- `refactor`
-- `docs`
-- `test`
-- `chore`
-- `perf`
-- `style`
+Load [commit-message](../commit-message/SKILL.md) for the message format.
 
 Before committing:
 
-- inspect `git status`
-- inspect staged and unstaged diff
-- check recent commit style if useful
-- never commit secrets
+- inspect `git status` and staged/unstaged diffs
+- stage only intended changes and review the final staged diff
+- run relevant repository checks
+- never commit secrets or unrelated work
 
 ## Pull Requests
 
 Before opening a PR:
 
-- determine the correct base branch if the user did not specify it
-- inspect the full diff from base to `HEAD`
-- inspect all commits included in the PR, not just the latest one
-- push the branch if needed
+- determine the correct base branch
+- inspect the full diff from base to `HEAD` and all included commits
+- check for an existing PR and push the branch if needed
+- load [pull-request-description](../pull-request-description/SKILL.md) for the body
 
-PR body:
+Verify the result and return the PR URL.
 
-- no heading
-- start with short bullet points summarizing the key changes
-- add diagrams or collapsible detail only when they help
+## Merge Conflicts
+
+Load [resolving-merge-conflicts](../resolving-merge-conflicts/SKILL.md).
+Stage only task-related resolutions; completing a merge/rebase requires authorization.
 
 ## Safety
 
-- never modify git config
+- never modify Git config
 - never skip hooks unless explicitly requested
+- never use interactive Git or GitHub CLI commands
 - never force-push to `main` or `master`
-- never use interactive git commands
-- amend only when the user explicitly asked, or when a commit succeeded and hooks changed files that must be included
-- if a commit failed or a hook rejected it, fix the issue and create a new commit instead of amending
+- discard changes, amend, or rewrite history only with explicit approval
+- if a commit or hook fails, diagnose and fix it, then retry a normal commit; do not amend
+- verify mutations and report checks honestly, including failures or checks not run
