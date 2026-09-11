@@ -1,15 +1,12 @@
 ---
 name: linear
 description: >
-  Guide for interacting with Linear. Triggers on: "Linear".
+  Conventions for Linear (task/issue management): default team and
+  task-creation rules. Triggers on "Linear", tickets, issues, or when
+  creating/assigning tasks.
 ---
 
 # Linear
 
-## Team
-
-The team is **Vibing Vipers**.
-
-## Creating Tasks
-
-When creating a new task, do not set any labels unless explicitly specified by the user.
+- Default team for task creation: **Vibing Vipers** (`VV`)
+- Never set labels on new tasks unless the user explicitly asks
