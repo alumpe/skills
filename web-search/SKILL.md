@@ -32,7 +32,7 @@ First match wins. Don't re-find a URL you already have — scrape it. Never loop
 
 ## Token discipline
 
-- Unseen pages: always cap with `--max-chars 4000–8000` and add `--trim`. An uncapped page can cost ~25k tokens.
+- Bound output using subcommand-supported flags: `scrape --max-chars 6000 --trim`, `search --scrape --max-chars 6000`, or `docs --tokens 4000`. On argument errors, check `ketch <subcommand> --help` before retrying.
 - Lists: add `--minimal` (one result per line) and `--limit 5` (default).
 - Scraping a bare domain may auto-return its `/llms.txt` instead of the homepage — check the `title` field; `--no-llms-txt` opts out.
 - `ketch docs` is two-step: `--resolve "name"` → vet that the match's name is the library you meant (resolve never returns empty; garbage gets confident fuzzy matches) → fetch with `--library <org/repo>`.
