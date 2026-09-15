@@ -63,6 +63,9 @@ colors, shapes, and elevation. Copy the `:root` block into a mockup and build on
   --header-height: 60px;
   --transition-duration: 0.3s;
 
+  /* Default gradient border for outlined elements */
+  --border-gradient: linear-gradient(180deg, #F4F7F9 0%, #BDD1DD 35%, #BDD1DD 100%);
+
   --font-family: 'Roboto', 'Helvetica Neue', Arial, sans-serif;
   --font-size: 14px;
 }
