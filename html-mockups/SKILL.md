@@ -37,5 +37,6 @@ Before handing off, confirm:
 - [ ] The styling uses the design tokens from [design-tokens.md](design-tokens.md): colors, radii, shadows, and fonts come from the CSS variables defined there, not from ad-hoc values. Shared values are defined once on `:root` and reused — no repeated literal values scattered through the CSS.
 - [ ] Sample content is realistic — names, dates, amounts — with no placeholder text like Lorem ipsum.
 - [ ] The mockup was opened in a browser via the agent-browser skill and iterated on with screenshots until the layout and interactions look correct — not just written once and handed over.
+- [ ] The result was compared side by side with the reference screenshot in [assets/components-overview.png](assets/components-overview.png): colors, radii, shadows, and overall component styling look similar to the reference design.
 - [ ] All demonstrated interactions work, interactive elements are semantic HTML with visible focus states, and variants are labeled and use the same representative content.
 - [ ] The handoff includes the file path and states any limitations, such as anything that could not be verified.
