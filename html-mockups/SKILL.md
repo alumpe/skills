@@ -9,15 +9,20 @@ description: Creates self-contained HTML mockups for features and UI elements. U
 
 - Create self-contained `.html` files that open directly in a browser. Inline CSS, any JavaScript, and assets (for example, SVG icons). Do not require a build step, framework, CDN, or external resource.
 - Use realistic sample content and enough interaction to demonstrate the intended behavior. Keep the scope to a mockup, not a production implementation.
+- Use semantic HTML: `<button>` for clickable actions, `<label>` for inputs, alt text for images. Keep keyboard focus working and keep text/background contrast readable.
+- Design for desktop screens only (roughly 1280×800 and up). Do not add tablet or mobile layouts unless the task explicitly asks for them.
 
 ## Design exploration
 
 - When the task leaves room for exploration, try a few meaningfully different designs. Vary layout, composition, hierarchy, density, or styling, not just colors. For example, compare a compact table with grouped cards. Do not force alternatives when the user asks for a specific design or a small adjustment.
 - Make alternatives easy to compare, with clear labels and the same representative content. Use one file with multiple variants or a separate self-contained file per variant, whichever suits the mockup.
 
-## Gastromatic design system
+## Design baseline
 
-- For gastromatic UI, consult the `gastromatic-design-system` MCP server for available component guidance and visual conventions. Treat it as a reference: its React components cannot be used directly in these HTML mockups. Recreate the relevant appearance and behavior with plain HTML, CSS, and minimal JavaScript. If the server is unavailable, say so rather than claiming design-system fidelity.
+- Use the design system in [design-tokens.md](design-tokens.md) (colors, radii, shadows, gradient borders) as the default styling baseline for product mockups, unless the task asks for a specific different look.
+- Look at the reference screenshot in [assets/components-overview.png](assets/components-overview.png) for visual inspiration: it shows how buttons, inputs, badges, chips, tables, cards, and other components look when styled with these tokens.
+- Write modular, maintainable CSS: define all shared values (colors, radii, shadows, spacing, font sizes) as CSS variables on `:root` and reference the variables everywhere instead of repeating literal values. Structure rules around reusable classes or component-scoped blocks rather than one-off selectors, so a change to a single variable or rule propagates consistently through the whole mockup.
+- Recreate the appearance and behavior of any component with plain HTML, CSS, and minimal JavaScript. Do not use component libraries or other external dependencies.
 
 ## Verification and handoff
 
