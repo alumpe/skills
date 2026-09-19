@@ -45,7 +45,9 @@ Verify the result and return the PR URL.
 ## Merge Conflicts
 
 Load [resolving-merge-conflicts](../resolving-merge-conflicts/SKILL.md).
-Stage only task-related resolutions; completing a merge/rebase requires authorization.
+
+A request to resolve conflicts authorizes editing and staging only.
+Stop after staging; do not run `git commit`, `git merge --continue`, or `git rebase --continue`.
 
 ## Safety
 

@@ -1,6 +1,8 @@
 ---
 name: resolving-merge-conflicts
-description: "Use when you need to resolve an in-progress git merge/rebase conflict."
+description: >
+  Resolves conflicts in an in-progress Git merge or rebase and stages the resolved files for the user.
+  Use when resolving merge or rebase conflicts.
 metadata:
   source: https://github.com/mattpocock/skills/blob/3cca18b368ae95cdbdebbff572ccafa662551015/skills/engineering/resolving-merge-conflicts/SKILL.md
 ---
@@ -13,6 +15,11 @@ metadata:
 
 4. Discover the project's **automated checks** and run them, typically typecheck, then tests, then format. Fix anything the merge broke.
 
-5. **Finish the merge/rebase.** Stage everything but do **not** commit — leave that to the user. If rebasing, continue the rebase process (`git rebase --continue`) until all commits are rebased, unless the final commit would be created by the rebase itself; in that case, ask the user before proceeding.
+5. **Stage the resolutions and stop.** Stage each resolved file explicitly and use `git status` to confirm no unmerged paths remain.
+   Preserve unrelated changes; never use blanket staging commands such as `git add .` or `git add -A`.
 
-6. **Report back.** Summarize at a high level: straightforward resolutions in one line each, details only for conflicts where intent clashed or trade-offs were made, plus the outcome of the automated checks.
+   A request to resolve conflicts authorizes editing and staging only.
+   Do not run `git commit`, `git merge --continue`, or `git rebase --continue`; leave completion to the user.
+
+6. **Report back.** Summarize the resolutions and check results.
+   Confirm that the resolved files are staged and no commit was created.
