@@ -1,26 +1,14 @@
 # TypeScript Visual Spacing Examples
 
-These examples isolate vertical spacing. The before versions already use clear names and braces; they still need polishing. Preserve existing expression choices when spacing alone addresses the problem.
+These examples isolate vertical spacing. They use clear names and braces so the
+intended spacing stands out. Preserve existing expression choices when spacing
+alone addresses the problem.
 
 ## 1. Separate declarations, guards, and the normal path
 
 Each guard is a separate visual unit, even within one validation phase. Do not keep a lookup attached to its guard.
 
-Before:
-
-```ts
-const account = await findAccount(id);
-if (!account) {
-  throw new NotFoundError(id);
-}
-if (!account.enabled) {
-  return [];
-}
-const entries = await loadEntries(account);
-return entries;
-```
-
-After:
+Example:
 
 ```ts
 const account = await findAccount(id);
@@ -42,19 +30,7 @@ return entries;
 
 Multiline declarations get breathing room even when their neighbors belong to the same calculation. Range endpoints and summary metrics remain compact pairs.
 
-Before:
-
-```ts
-const start = range.start;
-const end = range.end;
-const activeEntries = entries.filter((entry) => {
-  return entry.enabled && overlaps(entry, start, end);
-});
-const total = sumAmounts(activeEntries);
-const count = activeEntries.length;
-```
-
-After:
+Example:
 
 ```ts
 const start = range.start;
@@ -88,9 +64,13 @@ await eventStore.append(
 logger.info("Account disabled");
 ```
 
-## 3. Separate final returns, even in short bodies
+## 3. Keep short return preparation compact
 
-Before:
+A short declaration that only prepares the final return can stay beside it.
+Separate the return after a control-flow block, a standalone effect, a multiline
+statement, or a longer preparation phase.
+
+Example:
 
 ```ts
 function getTotal(entries: Entry[]) {
@@ -104,23 +84,7 @@ const totals = groups.map((group) => {
 });
 ```
 
-After:
-
-```ts
-function getTotal(entries: Entry[]) {
-  const total = sumAmounts(entries);
-
-  return roundCurrency(total);
-}
-
-const totals = groups.map((group) => {
-  const total = sumAmounts(group.entries);
-
-  return roundCurrency(total);
-});
-```
-
-A return-only body stays compact; do not expand it with empty lines:
+A return-only body also stays compact; do not expand it with empty lines:
 
 ```ts
 function getName(user: User) {
@@ -130,16 +94,7 @@ function getName(user: User) {
 
 ## 4. Group small mutations; separate distinct effects
 
-Before:
-
-```ts
-account.enabled = false;
-account.disabledAt = now;
-await repository.save(account);
-await sendDisabledNotification(account);
-```
-
-After:
+Example:
 
 ```ts
 account.enabled = false;
@@ -154,22 +109,7 @@ Do not insert a blank line between the two assignments. They jointly update the 
 
 ## 5. Separate completed blocks, not attached branches
 
-Before:
-
-```ts
-const pending: Entry[] = [];
-for (const entry of entries) {
-  if (entry.ready) {
-    pending.push(entry);
-  } else {
-    recordSkipped(entry);
-  }
-}
-await saveEntries(pending);
-return pending.length;
-```
-
-After:
+Example:
 
 ```ts
 const pending: Entry[] = [];
@@ -188,3 +128,50 @@ return pending.length;
 ```
 
 Keep `} else {` together and do not add padding inside the loop's braces. The same attachment rule applies to `catch` and `finally`.
+
+## 6. Separate setup, action, and checks in tests
+
+Related setup statements belong together. Give the action its own block, then
+keep related checks together. Empty lines make these phases clear without
+section comments.
+
+Example:
+
+```ts
+it("disables the account", async () => {
+  const account = createAccount();
+  await repository.save(account);
+
+  const result = await service.disable(account.id);
+
+  expect(result.enabled).toBe(false);
+  expect(sendDisabledNotification).toHaveBeenCalledWith(account);
+});
+```
+
+## 7. Separate the main parts of a React component
+
+Keep related state and derived values together. Separate effects, local event
+handlers, and returned JSX when they form distinct parts of the component.
+
+Example:
+
+```tsx
+function AccountList({ accounts, onSelect }: Props) {
+  const [query, setQuery] = useState("");
+  const visibleAccounts = accounts.filter(matchesQuery(query));
+
+  useEffect(() => {
+    analytics.track("account_search", { query });
+  }, [query]);
+
+  const handleSelect = (account: Account) => onSelect(account.id);
+
+  return (
+    <>
+      <SearchInput value={query} onChange={setQuery} />
+      <AccountTable accounts={visibleAccounts} onSelect={handleSelect} />
+    </>
+  );
+}
+```

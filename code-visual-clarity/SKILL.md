@@ -1,6 +1,6 @@
 ---
 name: code-visual-clarity
-description: Guides visually clear, scannable code through intentional spacing, statement grouping, and block layout, especially in TypeScript and JavaScript. Use when writing or implementing code, modifying existing code, fixing bugs, refactoring, reviewing, or polishing. Apply during everyday coding, not only dedicated readability passes.
+description: Use whenever creating or changing JavaScript or TypeScript code. Keeps code easy to scan through clear spacing and statement grouping.
 ---
 
 # Code Visual Clarity
@@ -9,7 +9,7 @@ description: Guides visually clear, scannable code through intentional spacing, 
 
 Make code easy to scan, not merely easy to understand one expression at a time. Separate structural units, not every statement. Visually dense code warrants whitespace-only edits even when names, expressions, and behavior are already clear.
 
-Read [EXAMPLES.md](EXAMPLES.md) before editing. Its before/after pairs define the intended spacing, not optional inspiration.
+Read [EXAMPLES.md](EXAMPLES.md) before editing. Its positive examples define the intended spacing, not optional inspiration.
 
 ## Scope and safety
 
@@ -38,7 +38,8 @@ Use exactly one blank line between neighboring visual units. Apply these rules i
 
 ### Final returns
 
-- Separate a final `return` from preceding sibling work, including the declaration that directly prepares its value. Apply this even in two-statement functions and callbacks.
+- In a short body, keep a final `return` beside one short declaration that directly prepares its value.
+- Separate a final `return` after a completed control-flow block, a standalone effect such as saving or notifying, a multiline statement, or a longer preparation phase.
 - Keep return-only bodies compact. Do not add blank lines immediately inside opening or closing braces, including around a guard's only statement.
 - Keep `return` and its expression together; never introduce a line break that changes JavaScript automatic semicolon insertion behavior.
 
@@ -47,6 +48,8 @@ Use exactly one blank line between neighboring visual units. Apply these rules i
 - Keep tightly related short mutations together when they form one small operation, such as setting a status and its timestamp.
 - Separate distinct operations: preparation, persistence, notification, cleanup, and result construction. Related business intent does not make an entire sequence one visual unit.
 - Do not mechanically separate every assignment, call, or `await`. Short calls that jointly perform one small operation can stay grouped; distinct effects such as saving and notifying should be separated.
+- In tests, separate setup, action, and checks when each phase exists. Keep related setup statements together and related checks together; do not add comments only to label the phases.
+- In React components, keep related state and derived values together. Separate effects, local event handlers, and returned JSX when they form distinct parts of the component.
 
 ## Required workflow
 
@@ -57,7 +60,7 @@ Use exactly one blank line between neighboring visual units. Apply these rules i
 5. Before declaring completion, check every in-scope body for:
    - Guards separated from declarations, other guards, and the normal path.
    - Multiline statements separated from neighboring statements.
-   - Final returns separated from preceding work.
+   - Final returns kept with one short preparing declaration, or separated after blocks, effects, multiline statements, and longer preparation.
    - Distinct actions separated, with tightly related short statements still grouped.
    - No gratuitous internal padding or behavior changes.
 6. Summarize meaningful spacing improvements and observed check results. If no changes are needed, say so only after the spacing sweep. Report any rule that could not be applied and why.
