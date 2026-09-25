@@ -19,6 +19,11 @@ Write the description as a concise report of what changed and why. Follow the
 [plain-language skill](../plain-language/SKILL.md): use plain, direct sentences
 and avoid unnecessary jargon or formulaic agent language.
 
+Do not include verification, testing, or checks sections. Omit commands that
+were run, test counts, and lint, formatting, type-check, build, or test results.
+Report this information to the user after creating or updating the pull request,
+not in the pull request description.
+
 ## Task scope
 
 Match the action to the request:
