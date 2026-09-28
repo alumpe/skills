@@ -1,91 +1,59 @@
 ---
 name: testing
-description: Guides risk-based selection and clear construction of useful automated tests. Use when deciding whether code needs tests or when creating, modifying, debugging, or reviewing automated tests.
+description: Guides which automated tests are worth writing and how to write them well. Use when deciding whether code needs tests or when creating, modifying, or reviewing automated tests.
 ---
 
 # Testing
 
-Repository instructions and nearby tests control the framework, file placement, commands, and syntax. This skill controls test value, behavioral focus, determinism, and assertion quality.
+Write tests that catch defects that matter, and skip tests that only add maintenance. Every test costs time to write, review, run, and maintain, so each one should protect something important.
 
-## 1. Decide What to Test
+Repository instructions and nearby tests decide the framework, file location, commands, and style.
 
-Read the relevant production code and existing tests before adding cases. Search for current protection and put new behavior in the closest clear test home.
+## Decide what to test
 
-Evaluate every behavior change. Do not add a test merely because a method, branch, file, or public symbol exists. For a reproducible bug, presume a regression test is needed unless an existing test already detects it or an automated reproduction is impractical.
+Read the changed code and its existing tests first. For each test you consider, name the defect it would catch: a specific mistake and the wrong result it causes, such as "a discount code applied twice reduces the price twice." The test is worth writing when that defect could realistically happen, would cause real harm, and is not already caught by an existing test, type check, schema, or linter. If you cannot name such a defect, skip the test.
 
-### Test-value gate
+Usually worth testing:
 
-Answer these before writing a test:
+- Business rules and calculations, especially those involving money, permissions, or changes to stored data.
+- Bug fixes: a regression test that reproduces the bug. Follow the [bug-fixes skill](../bug-fixes/SKILL.md).
+- Boundaries that are easy to get wrong, such as limits, empty input, or date ranges.
+- Error handling that callers rely on, such as rejected input or a failing dependency.
+- Queries, mappings, and serialization where the code meets a database, file system, or external API.
+- Interfaces that other modules, services, or teams depend on.
+- Complex branching logic and code that has broken before.
 
-1. What observable behavior, contract, invariant, or regression will it protect?
-2. What plausible defect could break that behavior, and how likely or harmful is it?
-3. Would an existing test or static check already detect that defect?
-4. What is the narrowest scope that faithfully includes the risky interaction?
-5. Which representative partitions, boundaries, or failure modes add distinct confidence?
-6. Can the test's sensitivity be shown by reproducing or deliberately perturbing the defect?
-7. Does the confidence justify the writing, runtime, diagnosis, maintenance, and flakiness costs?
+Usually skip tests that:
 
-If these questions have no concrete answers, do not add the test. If the user asks for tests that appear ceremonial, explain the concern, propose the smallest useful alternative, and ask before materially changing the request.
+- Exist because a function, branch, or file exists, or to raise coverage.
+- Check getters, constants, constructors, simple mapping, or delegation, unless other code depends on that exact behavior.
+- Repeat one rule with more inputs. One representative input per rule is usually enough, plus boundaries that are likely to be wrong.
+- Cover inputs no caller can produce or that the type system already rules out.
+- Check library, framework, or language behavior instead of this project's use of it.
+- Check the same rule again at another level, such as unit and end-to-end.
+- Only confirm that code runs without throwing or returns something defined.
+- Assert log output, exact error wording, or internal call order that no caller relies on.
 
-### Choose focus, extent, and scope
+Give each test its own defect to catch. If two tests would fail for the same mistake, keep one.
 
-- Prioritize regressions, domain rules, invariants, compatibility promises, meaningful boundaries, and failure-prone interactions by risk.
-- Cover reachable invalid inputs and distinct failure modes, not speculative or impossible combinations.
-- Use representative equivalence classes and boundaries. Do not mechanically enumerate branches or create cross-products of independent dimensions.
-- Usually skip direct tests of getters, constants, and trivial delegation. Test them when they carry an important contract, impact, compatibility promise, or otherwise-unprotected risk.
-- Do not duplicate guarantees already enforced statically. Test the meaningful runtime behavior or integration that the static check cannot prove.
-- Test project-specific configuration, wrappers, mappings, and assumptions about third-party code, not the dependency's own guarantees.
-- Add tests during a behavior-preserving refactor only for important behavior that lacked protection.
+Apply this guidance when the user asks for tests in general, and mention tests you skipped that they might expect. If the user asks for a specific test that you think adds little value, explain why and ask before writing it.
 
-Choose the narrowest faithful scope, not the narrowest test by definition:
+## Choose the scope
 
-- Use a focused unit test for an isolated rule or calculation.
-- Keep lightweight in-process collaborators when their interaction matters.
-- Use the real production-compatible database, filesystem, queue, or serializer when its semantics create the risk.
-- Use contract tests for external compatibility and property-based tests for a stable invariant over a broad input space.
-- Use a small number of end-to-end tests for critical journeys, deployment wiring, or whole-system behavior that narrower tests cannot prove.
-- Repeat behavior across levels only when each level supplies distinct evidence or diagnosis. Do not repeat the full case matrix at every level.
+Use the smallest test that still includes the code where the defect would happen:
 
-## 2. Write the Test
+- A unit test for a rule or calculation in one place.
+- An integration test with the real database, file system, or serializer when the defect depends on how that dependency behaves.
+- An end-to-end test only for a critical user flow that smaller tests cannot cover.
 
-### Name and organize
+## Write the test
 
-- Follow repository conventions for file names, suffixes, and locations. Name top-level suites after the behavior-owning component, capability, or contract.
-- Name each case as a behavioral sentence that states the observable outcome and, when relevant, its condition. Use domain language rather than only a production method name; do not mandate words such as `should`.
-- Group cases by behavior or contract. Nest only when it improves navigation or removes genuinely repeated context.
-
-### Set up the case
-
-- Make setup, exercise, and verification visually distinct without mandatory phase comments or a fixed number of statements.
-- Keep behavior-defining inputs in the case. Use minimal, meaningful data and helpers or factories for irrelevant defaults.
-- Share setup only when it stays obvious and immutable. Each case must own or reset mutable state, clean external resources, and pass alone or in any order.
-- Control clocks, randomness, identifiers, and scheduling unless they are the behavior under test. Await completion signals or bounded observable conditions; do not use fixed sleeps.
-- Extract a test helper when its name clarifies intent and hides irrelevant mechanics, not merely because code repeats.
-- Use real lightweight collaborators. Replace remote, slow, heavyweight, costly, or nondeterministic boundaries deliberately. When correctness depends on a double matching reality, add a contract or integration check. Do not expose internals only for tests; introduce a legitimate production seam when it improves the design as well as testability.
-
-### Assert the contract
-
-- Assert observable returned values, public state, persisted effects, emitted events, or contractually significant errors. Do not inspect private state or verify internal calls and order unless that interaction is itself the contract.
-- Make assertions strong enough to establish the complete meaningful outcome while ignoring incidental fields and formatting. For errors, assert the stable type, code, status, or message fragment consumers rely on.
-- Test one coherent behavior per case, not one assertion. Use multiple related assertions when they jointly describe that outcome and fail clearly.
-- Use snapshots only when the reviewed artifact is the contract and the snapshot remains focused and understandable.
-- Parameterize examples only when they exercise the same rule and assertion shape. Keep distinct domain rules and regressions as named cases.
-- Comment only to explain a non-obvious constraint or regression history.
-
-### Preserve protection
-
-Extend an existing case only if it remains one coherent behavior; otherwise add a distinct case. When requirements change, update or remove only assertions for the changed contract. Never weaken a valid assertion to hide a production defect. Treat test code with production-level care, but prefer explicit repetition over premature test abstractions.
-
-## Finish
-
-- For a bug fix, observe the regression test fail before the fix when reproducible, then pass afterward. For important new behavior, perturb it to demonstrate sensitivity when practical; mutation tooling is not required.
-- Run the focused case first, then the smallest relevant suite or repository-prescribed check. Report checks that were not run.
-- Fix nondeterminism in every new or touched test before finishing. Retries and repeated passing runs do not make a flaky test reliable.
-- Briefly report omitted tests and non-obvious scope choices. Do not narrate routine test additions.
-
-## Useful Versus Ceremonial
-
-- Useful: fails for a plausible behavioral regression. Ceremonial: still passes when the claimed behavior is removed.
-- Useful: exercises the real interaction that creates risk. Ceremonial: verifies only assumptions encoded in mocks.
-- Useful: covers a meaningful boundary or partition. Ceremonial: adds another mechanically similar permutation.
-- Useful: asserts an observable contract. Ceremonial: pins private structure or checks only that a value is non-null.
+- Test through the public interface. Assert return values, saved data, sent messages, or errors that callers depend on. Do not assert private state or internal calls unless that call is the requirement.
+- Use real in-process collaborators. Replace only dependencies that are remote, slow, costly, or nondeterministic. A test that mostly checks what its own mocks return proves nothing.
+- Assert the complete meaningful result, and ignore fields that do not matter to the behavior.
+- Keep the inputs that define the behavior visible in the test. Move irrelevant setup into helpers or factories.
+- Name the test after the behavior, such as "rejects an expired token," not after the method.
+- Keep tests deterministic and independent: control time and randomness, wait for real conditions instead of fixed sleeps, and give each test its own state.
+- Add cases to an existing test file before creating new files or helpers.
+- Never weaken or delete a valid assertion to make a test pass. When requirements change, update only the assertions for the changed behavior.
+- Confirm each new test can fail: run it before the fix, or briefly break the behavior and watch it fail.
