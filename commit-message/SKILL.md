@@ -22,8 +22,8 @@ Write one commit subject from the diff:
 
 `<type>: <imperative description>`
 
-No scope. Start the description with a lowercase verb (e.g. `update`, not
-`Update`); preserve proper names and acronyms elsewhere.
+No scope. Write the entire subject in lowercase, including names and acronyms
+(e.g. `add api client for github`, not `add API client for GitHub`).
 
 Choose the best-fitting type: `feat`, `fix`, `refactor`, `perf`, `docs`, `test`,
 `chore`, `build`, `ci`, `style`, or `revert`.
@@ -41,8 +41,8 @@ a body, or extra text.
 
 ## Examples
 
-- `fix: preserve employee filters when navigating back to HR Manager`
-- `refactor: share GitHub authentication between CLI commands`
+- `fix: preserve employee filters when navigating back to hr-manager`
+- `refactor: share github authentication between cli commands`
 - `docs: clarify local development setup`
 
 ## Boundaries
