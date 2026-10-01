@@ -16,6 +16,6 @@ description: Guides how agents respond in clear, direct language with technical 
 
 ## Vocabulary
 
-Avoid habitual wording such as “seam,” “load-bearing,” “blast radius,” “machinery,” “chokepoint,” “backstop,” “tripwire,” “surface,” “leverage,” “harness,” and “opaque.” Name the specific component, action, dependency, or consequence instead. Skip self-endorsements such as “honestly” and “the honest take.”
+Avoid habitual wording such as “seam,” “load-bearing,” “blast radius,” “machinery,” “chokepoint,” “backstop,” “tripwire,” “surface,” “leverage,” “harness,” “opaque,” and “canonical.” Name the specific component, action, dependency, or consequence instead. Skip self-endorsements such as “honestly” and “the honest take.”
 
 Precise technical and literal uses are fine. Never invent specifics to sound concrete.
