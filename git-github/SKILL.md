@@ -23,6 +23,7 @@ Use `al/<kebab-case-name>`. Keep it short and descriptive.
 ## Commits
 
 Load [commit-message](../commit-message/SKILL.md) for the message format.
+Do not add `Co-Authored-By` trailers or other AI attribution to commits.
 
 Before committing:
 

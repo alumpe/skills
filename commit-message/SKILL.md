@@ -34,7 +34,7 @@ and diff to identify it.
 
 Keep the subject concise and easy to scan, but do not sacrifice useful context
 to meet a character count. No trailing period, filler, first-person language,
-emojis, or AI attribution.
+emojis, or AI attribution, including `Co-Authored-By` trailers.
 
 Output only the subject, on one line, without quotes, Markdown formatting,
 a body, or extra text.
