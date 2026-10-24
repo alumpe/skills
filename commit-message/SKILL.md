@@ -1,7 +1,7 @@
 ---
 name: commit-message
-# Keep message rules in sync with agent.commit_message_instructions in
-# ~/dotfiles/private_dot_config/zed/private_settings.json (chezmoi source).
+# Keep message rules in sync with agent.commit_message_instructions in the
+# chezmoi source files ~/dotfiles/zed-settings.work.json and zed-settings.private.json.
 description: >
   Writes clear, concise, single-line Conventional Commit messages from a diff.
   Use when drafting or choosing a commit message, committing changes, or when
