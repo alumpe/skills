@@ -1,3 +1,6 @@
 # Claude Code syncs its built-in skills into ~/.claude/skills/synced/,
 # which is symlinked to this repo.
 /synced/
+
+# Claude tools move removed skills into ~/.claude/skills/.trash/.
+/.trash/
