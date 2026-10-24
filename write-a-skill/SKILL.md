@@ -1,5 +1,5 @@
 ---
-# Reference: https://github.com/mattpocock/skills/blob/main/skills/productivity/write-a-skill/SKILL.md
+# Reference: https://github.com/mattpocock/skills/blob/ab7196a1584ac60688aeb63cf0b56a5114c4a6f3/skills/productivity/write-a-skill/SKILL.md
 name: write-a-skill
 description: Create new agent skills with proper structure, progressive disclosure, and bundled resources. Use when user wants to create, write, or build a new skill.
 ---

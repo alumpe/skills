@@ -1,6 +1,6 @@
 # Excalidraw CLI Cheatsheet
 
-Tested against `mcp-excalidraw-server` 2.0.0. Prefix every command with `npx -y mcp-excalidraw-server`; `help <command>` shows usage. Unpinned `npx` can resolve a newer release, so check `--version` and recheck the version-specific notes after an upgrade.
+Tested against `mcp-excalidraw-server` 2.1.2. Prefix every command with `npx -y mcp-excalidraw-server`; `help <command>` shows usage. Unpinned `npx` can resolve a newer release, so check `--version` and recheck the version-specific notes after an upgrade.
 
 Default URL: http://127.0.0.1:3000, overridden by `EXPRESS_SERVER_URL` or `--url <url>`. `EXCALIDRAW_NO_AUTOSTART=1` disables autostart; `start` still works.
 
@@ -8,7 +8,7 @@ Default URL: http://127.0.0.1:3000, overridden by `EXPRESS_SERVER_URL` or `--url
 
 | Command | Description |
 |---------|-------------|
-| `status` | Backend health, element count, `browserClients` (connected tabs) |
+| `status` | Backend health, element count, `renderers` (`node` headless, `browser` tabs), `browserClients` (connected tabs) |
 | `start` / `stop` | Start the canvas in the background / stop it. `stop` only stops the canvas process it identifies |
 | `add [file\|-]` | Create elements from a JSON array (file or stdin); `add --one '{...}'` for one element |
 | `apply [file\|-]` | `{"create": [...], "update": [{"id": "a", "set": {...}}], "delete": ["id"]}`. Not atomic. Updates take `set` or direct fields, not both |
@@ -16,12 +16,13 @@ Default URL: http://127.0.0.1:3000, overridden by `EXPRESS_SERVER_URL` or `--url
 | `query` | `--type rectangle`, `--bbox x0,y0,x1,y1`, `--filter key=value` (nested keys like `label.text=API` work), `--filter-json '{...}'` |
 | `update <id> --set '{...}'` | Change properties |
 | `delete <id> [...]` | Delete elements |
-| `describe` | Plain-text summary: IDs, positions, labels, connections, groups, bounding box |
-| `screenshot` | PNG to `--out file.png` (without `--out`: JSON with a temp path). `--format svg` (raw SVG on stdout without `--out`), `--no-background`. Needs a tab |
+| `describe` | Plain-text summary: IDs, positions, labels, groups, bounding box. Connections list only natively bound arrows (after a sync); check CLI arrows with `get <arrow-id>` or `query --filter start.id=<id>` |
+| `screenshot` | Renders on the server, no tab needed. PNG to `--out file.png` (without `--out`: JSON with a temp path). `--format svg` or a `.svg` path (raw SVG on stdout without `--out`; fonts embedded unless `--no-embed-fonts`). `--scale 1-4`, `--dark`, `--padding N`, `--no-background`, `--ids a,b`, `--frame <id>`. `--renderer browser` renders in an open tab instead |
+| `render [file\|-]` | Render a `.excalidraw` or `.excalidraw.md` file to PNG/SVG without a canvas server. Same flags as `screenshot` |
 | `mermaid [file\|-]` | Add converted elements to the scene. Needs a tab; exit 0 only confirms the request was sent |
 | `export` | `.excalidraw` JSON to `--out file` or stdout. A `.md` path, or `--format obsidian`, writes Obsidian format |
-| `import [file\|-]` | Load `.excalidraw` or `.excalidraw.md`. Merges by default, overwriting matching IDs. `--replace` clears first, even if the import then fails |
-| `snapshot save\|list\|restore [name]` | In-memory snapshots, lost on restart. `save`/`restore` need a name; `restore` replaces the scene |
+| `import [file\|-]` | Load `.excalidraw` or `.excalidraw.md`. Merges by default, overwriting matching IDs. `--replace` replaces the scene; a failed import leaves it unchanged |
+| `snapshot save\|list\|restore [name]` | In-memory snapshots, lost on restart. `save`/`restore` need a name; `restore` replaces the scene, or leaves it unchanged if the restore fails |
 | `arrange align --ids a,b --to left\|center\|right\|top\|middle\|bottom` | Align 2+ elements |
 | `arrange distribute --ids a,b,c --to horizontal\|vertical` | Space 3+ elements evenly |
 | `arrange group --ids a,b` / `arrange ungroup --group <groupId>` | Group or ungroup |
@@ -30,14 +31,14 @@ Default URL: http://127.0.0.1:3000, overridden by `EXPRESS_SERVER_URL` or `--url
 | `share` | Upload an encrypted copy and return an excalidraw.com link |
 | `clear --yes` | Remove all elements |
 
-Exit codes: 0 ok, 1 error, 2 usage, 3 canvas unreachable or wrong service, 4 browser tab required.
+Exit codes: 0 ok, 1 error, 2 usage, 3 canvas unreachable or wrong service, 4 browser tab required (only `mermaid` and `screenshot --renderer browser`).
 
 ## Editing imported or browser-synced diagrams
 
 Import and browser sync store native Excalidraw elements instead of the CLI's `label` / `start` / `end` shorthand. Check `get <id>` before editing.
 
 - **Labels:** `query --type text --filter containerId=db` returns the shape's text element; change it with `update <text-id> --set '{"text":"Database"}'`. A larger element count after sync is normal, since every label is its own element. Don't delete text elements that have a `containerId`.
-- **Arrows:** native `startBinding` / `endBinding` don't follow CLI moves. Rebind with `update <arrow-id> --set '{"start":{"id":"api"},"end":{"id":"db"}}'`; later moves of `api` or `db` then reroute the arrow. `update` ignores `startElementId` / `endElementId` in 2.0.0. Browser edits can replace the bindings again, so recheck after UI changes.
+- **Arrows:** native `startBinding` / `endBinding` don't follow CLI moves. Rebind with `update <arrow-id> --set '{"start":{"id":"api"},"end":{"id":"db"}}'`; later moves of `api` or `db` then reroute the arrow. `update` ignores `startElementId` / `endElementId`. Browser edits can replace the bindings again, so recheck after UI changes.
 - **Copies:** `arrange duplicate` doesn't copy separate labels. Rebuild copies with `add` (new IDs, same geometry and style, `text`), then add arrows between them. Don't reuse the originals' `boundElements`.
 - **Manual routes:** don't rebind an arrow whose waypoints must stay. Use unbound points and adjust them yourself:
 
@@ -47,13 +48,14 @@ npx -y mcp-excalidraw-server add --one '{"id":"manual-route","type":"arrow","x":
 
 ## Export limitations
 
-- `screenshot` renders in the browser; `export` builds scene JSON on the server. Defaults such as corner roundness and label size can differ, so reopen important exports and check them.
-- Mermaid ER conversion produces one `image` element whose data export omits (`files` is empty). It reopens as a missing-image placeholder. Screenshot PNG/SVG before closing the tab.
+- `export` applies its own defaults that the canvas and `screenshot` don't, such as rounded corners and Virgil labels. Check important exports with `render`.
+- Mermaid ER conversion produces one `image` element. Export and snapshots keep it; `share` drops it. Headless `screenshot` and `render` draw it without its text, so use `screenshot --renderer browser` while the tab is open.
+- Headless `screenshot` and `render` replace Nunito and Lilita with Liberation Sans, and Comic Shanns with Cascadia, with a warning on stderr. Check those fonts with `screenshot --renderer browser`.
 - In export, shape labels default to size 16 (set `fontSize` on the shape to change it). Arrow labels are always 14, so use a separate text element when a saved arrow label must be larger.
 
 ## Element format
 
-- Types: `rectangle`, `ellipse`, `diamond`, `text`, `arrow`, `line` (imports may also contain `freedraw` and `image`). Every element needs `type`, `x`, `y`.
+- Types: `rectangle`, `ellipse`, `diamond`, `text`, `arrow`, `line`, `frame` (imports may also contain `freedraw` and `image`). Every element needs `type`, `x`, `y`.
 - `points`: `[[x, y]]` tuples or `[{x, y}]` objects, relative to the element's `x`/`y`.
 - `fontFamily`: `"virgil"`, `"helvetica"`, `"cascadia"`, `"excalifont"`, `"nunito"`, `"lilita"`, `"comic"`, or IDs 1, 2, 3, 5, 6, 7, 8.
 - `strokeStyle`: `solid`, `dashed` (async flows, zone borders), `dotted` (weak dependencies).
