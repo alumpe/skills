@@ -25,17 +25,17 @@ Use the installed `ketch` CLI. If it is unavailable, tell the user and stop; do 
 | Version-aware library documentation | Resolve the library, then use `ketch docs "topic" --library <org/repo> --tokens 4000` |
 | Many pages from one site | `ketch crawl <url> --depth 2 --allow /relevant/path/` |
 
-Scrape known URLs directly and batch several in one call. Use `crawl` only to follow links across one site. Omit `--backend` for the configured default. For federated search, use `--multi=brave,exa` only when the extra provider cost is justified; it cannot be combined with `--backend`.
+Scrape known URLs directly and batch several in one call. Use `crawl` only to follow links across one site. Omit `--backend` for the configured default. For federated search, use `--multi=<a>,<b>` only when the extra provider cost is justified; `--random=<a>,<b>` instead tries providers in random order until one succeeds. Pick providers that `ketch doctor` reports as `ok`. `--multi`, `--random`, and `--backend` are mutually exclusive.
 
 ## Important workflows
 
 ### Repository code search
 
-For a broad search, use the default `grepapp` backend. To search one repository, select Sourcegraph and put its `repo:` qualifier inside the query:
+For a broad search, use the default `grepapp` backend. To search one repository, add `--repo owner/name`; it matches exactly on every backend:
 
-`ketch code 'mountPath repo:^github\.com/squat/generic-device-plugin$' -b sourcegraph --limit 10`
+`ketch code 'mountPath' --repo squat/generic-device-plugin --limit 10`
 
-The `repo:` filter is query syntax, not a CLI flag. `--regex` works with `grepapp` and `sourcegraph`, not `github`. Shell-quote apostrophes safely: `ketch code "Can't connect to USB device"`.
+`--regex` works with `grepapp` and `sourcegraph`, not `github`. Shell-quote apostrophes safely: `ketch code "Can't connect to USB device"`.
 
 ### Library documentation
 
@@ -54,8 +54,8 @@ The `repo:` filter is query syntax, not a CLI flag. `--regex` works with `grepap
 
 - Invalid call: fix it using the subcommand's `--help`; never repeat it unchanged.
 - No result: change the query or selector.
-- Provider or network failure: if you selected a backend, rotate to another listed by `ketch config` and retry once. If `auto` failed, retry once, then report the outage.
-- Missing configuration: inspect with `ketch doctor --json` when available. Leave healthy settings alone, and ask before any change or installation.
+- Provider or network failure: if you selected a backend, rotate to another that `ketch doctor` reports as `ok` and retry once. If `auto` failed, retry once, then report the outage.
+- Missing configuration: inspect with `ketch doctor --json`. Leave healthy settings alone, and ask before any change or installation.
 - Cancelled or timed out: retry with a smaller scope.
 
 ## Research depth
