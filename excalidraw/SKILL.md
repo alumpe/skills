@@ -11,7 +11,7 @@ Drive a live Excalidraw canvas with the upstream CLI (tested with 2.1.2):
 npx -y mcp-excalidraw-server <command>
 ```
 
-Commands below omit that prefix. Results are JSON on stdout, except `describe` (plain text). Exit code 3 means the canvas is unreachable; 4 means the command needs a browser tab.
+Commands below omit that prefix. Results are JSON on stdout, except `describe` (plain text) and, without `--out`, `export` (scene JSON) and SVG `screenshot`/`render` (raw SVG). Exit code 3 means the canvas is unreachable; 4 means the command needs a browser tab.
 
 ## Canvas
 

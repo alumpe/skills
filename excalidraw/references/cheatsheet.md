@@ -18,7 +18,7 @@ Default URL: http://127.0.0.1:3000, overridden by `EXPRESS_SERVER_URL` or `--url
 | `delete <id> [...]` | Delete elements |
 | `describe` | Plain-text summary: IDs, positions, labels, groups, bounding box. Connections list only natively bound arrows (after a sync); check CLI arrows with `get <arrow-id>` or `query --filter start.id=<id>` |
 | `screenshot` | Renders on the server, no tab needed. PNG to `--out file.png` (without `--out`: JSON with a temp path). `--format svg` or a `.svg` path (raw SVG on stdout without `--out`; fonts embedded unless `--no-embed-fonts`). `--scale 1-4`, `--dark`, `--padding N`, `--no-background`, `--ids a,b`, `--frame <id>`. `--renderer browser` renders in an open tab instead |
-| `render [file\|-]` | Render a `.excalidraw` or `.excalidraw.md` file to PNG/SVG without a canvas server. Same flags as `screenshot` |
+| `render [file\|-]` | Render a `.excalidraw` or `.excalidraw.md` file to PNG/SVG without a canvas server. Same flags as `screenshot` except `--renderer` |
 | `mermaid [file\|-]` | Add converted elements to the scene. Needs a tab; exit 0 only confirms the request was sent |
 | `export` | `.excalidraw` JSON to `--out file` or stdout. A `.md` path, or `--format obsidian`, writes Obsidian format |
 | `import [file\|-]` | Load `.excalidraw` or `.excalidraw.md`. Merges by default, overwriting matching IDs. `--replace` replaces the scene; a failed import leaves it unchanged |
