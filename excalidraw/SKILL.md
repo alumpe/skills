@@ -5,17 +5,20 @@ description: Draw, edit, and export Excalidraw diagrams on a live canvas with th
 
 # Excalidraw
 
-Drive a live Excalidraw canvas with the upstream CLI (tested with 2.1.2):
+Drive a live Excalidraw canvas with the upstream CLI (tested with 2.1.2), installed and pinned through mise:
 
 ```sh
-npx -y mcp-excalidraw-server <command>
+mcp-excalidraw-server <command>
 ```
+
+If it isn't on PATH, use `npx -y mcp-excalidraw-server@2.1.2` instead.
 
 Commands below omit that prefix. Results are JSON on stdout, except `describe` (plain text) and, without `--out`, `export` (scene JSON) and SVG `screenshot`/`render` (raw SVG). Exit code 3 means the canvas is unreachable; 4 means the command needs a browser tab.
 
 ## Canvas
 
 - **Check:** `status`. `"running": true` means the backend is up; `browserClients` counts open browser tabs. It exits 3 when no canvas is running, which is a normal answer, not an error. Use the URL the CLI reports; respect an existing `EXPRESS_SERVER_URL` or `--url`.
+- **herdr canvas pane:** the herdr Excalidraw pane runs a canvas on a port in 7600–7699, shown in its title. Address it with `EXCALIDRAW_NO_AUTOSTART=1 mcp-excalidraw-server --url http://127.0.0.1:<port> …`; exit 3 means the pane was closed, so tell the user instead of starting a canvas.
 - **Start:** `start`. Canvas commands also autostart the backend.
 - **Stop:** `stop`, only when the user asks. The scene and snapshots live in memory, so export first.
 
@@ -30,7 +33,7 @@ If startup fails, read stderr. For a port conflict, identify the other service (
 3. Create shapes, then arrows, in one `add` call. Give elements readable `id`s:
 
    ```sh
-   npx -y mcp-excalidraw-server add <<'EOF'
+   mcp-excalidraw-server add <<'EOF'
    [
      {"id": "api", "type": "rectangle", "x": 0, "y": 0, "width": 160, "height": 60, "text": "API"},
      {"id": "db", "type": "rectangle", "x": 0, "y": 160, "width": 160, "height": 60, "text": "Postgres"},

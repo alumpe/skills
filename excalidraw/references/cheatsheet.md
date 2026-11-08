@@ -1,6 +1,6 @@
 # Excalidraw CLI Cheatsheet
 
-Tested against `mcp-excalidraw-server` 2.1.2. Prefix every command with `npx -y mcp-excalidraw-server`; `help <command>` shows usage. Unpinned `npx` can resolve a newer release, so check `--version` and recheck the version-specific notes after an upgrade.
+Tested against `mcp-excalidraw-server` 2.1.2. Prefix every command with `mcp-excalidraw-server` (pinned in mise); `help <command>` shows usage. After a version bump, check `--version` and recheck the version-specific notes.
 
 Default URL: http://127.0.0.1:3000, overridden by `EXPRESS_SERVER_URL` or `--url <url>`. `EXCALIDRAW_NO_AUTOSTART=1` disables autostart; `start` still works.
 
@@ -43,7 +43,7 @@ Import and browser sync store native Excalidraw elements instead of the CLI's `l
 - **Manual routes:** don't rebind an arrow whose waypoints must stay. Use unbound points and adjust them yourself:
 
 ```sh
-npx -y mcp-excalidraw-server add --one '{"id":"manual-route","type":"arrow","x":160,"y":180,"points":[[0,0],[0,120],[360,120],[360,0]],"elbowed":true}'
+mcp-excalidraw-server add --one '{"id":"manual-route","type":"arrow","x":160,"y":180,"points":[[0,0],[0,120],[360,120],[360,0]],"elbowed":true}'
 ```
 
 ## Export limitations
