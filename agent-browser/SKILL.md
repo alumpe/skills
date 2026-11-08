@@ -39,6 +39,22 @@ agent-browser skills get agentcore         # AWS Bedrock AgentCore cloud browser
 
 Run `agent-browser skills list` to see everything available on the installed version.
 
+## Visible browser in herdr
+
+When the user wants to watch or use the browser too, and you run inside herdr (`HERDR_PANE_ID` is set), open the page in terminal-browser. It opens a real browser in a herdr pane next to the user's, and `terminal-browser action` drives it with agent-browser commands:
+
+```bash
+terminal-browser open <url> --split right   # new pane to the right; a local .html path works too
+terminal-browser action -- snapshot -i      # everything after -- is an agent-browser command
+terminal-browser action -- click @e3
+terminal-browser action done                # when finished: clears the "agent is acting" marker in the pane
+```
+
+- `action` targets the browser in the current herdr tab and its active tab. `terminal-browser ls` lists browsers and tabs, for `--browser <key>` and `--tab <id>`.
+- terminal-browser manages the connection: `--session`, `--cdp`, `--headed`, `--profile`, `connect` and `launch` are refused.
+- The browser ends when the user closes its pane; check `terminal-browser ls` before acting on it again.
+- Use plain headless `agent-browser` for everything the user doesn't need to see.
+
 ## Why agent-browser
 
 - Fast native Rust CLI, not a Node.js wrapper
