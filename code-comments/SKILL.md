@@ -12,9 +12,9 @@ description: >
 
 ## Goal
 
-Use clear code and purposeful comments together. Comments carry intent,
-constraints, contracts, and orientation through non-obvious logic; they should
-help readers without paraphrasing individual statements.
+Use clear code and purposeful comments together. Comments state intent,
+constraints, and contracts, and help readers follow logic that is not obvious.
+They do not restate individual statements.
 
 Read [EXAMPLES.md](EXAMPLES.md) before adding comments. Its examples define
 the standard of comments worth writing, not optional inspiration.

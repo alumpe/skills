@@ -33,7 +33,7 @@ Use exactly one blank line between neighboring visual units. Apply these rules i
 
 - Keep a small group of tightly related one-line declarations together, such as range endpoints or summary metrics. Split declarations when they represent different steps, even if each is short.
 - Give a multiline declaration or standalone call its own visual block: a blank line before and after it when sibling statements exist. This includes object/array initializers, multiline call arguments, chains, and callbacks.
-- Separate local helper definitions from surrounding work. A declaration's multiline shape is itself a spacing boundary; do not require a change of phase as well.
+- Separate local helper definitions from surrounding work. A declaration that spans several lines gets a blank line before and after it, even when the statements around it belong to the same step.
 - These rules apply around whole statements, not between every object property, array element, call argument, or chain link. Do not scatter blank lines through a single expression.
 
 ### Final returns
@@ -54,7 +54,7 @@ Use exactly one blank line between neighboring visual units. Apply these rules i
 ## Required workflow
 
 1. Read each in-scope function or block in full. Identify guards, multiline units, action groups, and final returns.
-2. Make a dedicated vertical-spacing sweep, even if another readability pass already simplified expressions or branching. Ternary removal and formatter success do not satisfy this step.
+2. Go through the code once only for blank lines, even if an earlier pass already simplified expressions or branching. Removing ternaries or running the formatter does not replace this pass.
 3. Apply the rules directly. Do not stop at suggestions, and do not skip spacing-only improvements to minimize the diff. Leave code alone when it already meets the standard; there is no edit quota.
 4. Run relevant available formatting and checks without rewriting unrelated files. Reread the final code after formatting, not only the diff hunks.
 5. Before declaring completion, check every in-scope body for:

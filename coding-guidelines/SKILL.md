@@ -54,8 +54,9 @@ task's scope; a review-only task remains read-only.
 
 Keep modules and functions focused on one clear responsibility.
 
-Split code when distinct concerns start competing for attention. Do not split
-code to satisfy arbitrary size limits alone.
+Split code when one function or module handles several concerns and they make
+each other harder to read. Do not split code to satisfy arbitrary size limits
+alone.
 
 Keep related logic together when separation would add indirection without
 clarity.
@@ -63,5 +64,5 @@ clarity.
 Extract helpers and modules when doing so makes the main flow easier to read,
 changes easier to reason about, or responsibilities easier to own.
 
-Avoid speculative abstractions. Introduce shared structure only when the code
-has a real shared concept or repeated pressure that justifies it.
+Avoid speculative abstractions. Share code only when several places use the
+same concept, or when the same need has come up repeatedly.

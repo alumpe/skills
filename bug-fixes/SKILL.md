@@ -14,8 +14,8 @@ description: Guides bug fixes through a reproduce–fix–reproduce-again loop, 
    not because of a broken environment or test setup.
 2. **Fix.** Use the failure to investigate the root cause. Make the smallest
    coherent change that corrects the behavior, following existing patterns.
-   Avoid unrelated cleanup, symptom-masking workarounds, and weakening tests
-   merely to make them pass.
+   Avoid unrelated cleanup, workarounds that hide the symptom, and weakening
+   tests merely to make them pass.
 3. **Reproduce again.** Rerun the same test or procedure after the fix and verify
    the expected behavior now occurs. Keep an automated regression test when
    practical, then run relevant existing tests and check nearby edge cases.
@@ -24,8 +24,8 @@ description: Guides bug fixes through a reproduce–fix–reproduce-again loop, 
 ## Evidence and Limits
 
 - If reproduction is blocked or intermittent, state the limitation. Gather
-  logs, inputs, and environment details rather than treating a guess—or one
-  passing run—as proof of a fix.
+  logs, inputs, and environment details. Do not treat a guess or a single
+  passing run as proof of a fix.
 - When an attempt fails, use the new evidence to revise the hypothesis before
   trying again. If progress stalls, report the blocker and what is needed next.
 - Finish with a brief account of the cause, change, and verification: what

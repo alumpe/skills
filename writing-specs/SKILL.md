@@ -18,7 +18,7 @@ A spec defines how something should be and why: behavior, a workflow, a data con
 - Write for a human reader: concise, precise, and easy to scan. Follow [plain-language](../plain-language/SKILL.md). Use one term per concept and explain project-specific terms on first use.
 - Before finishing, check that someone could plan and build from the spec without asking the author, that it is no longer than that requires, and that it contradicts neither itself nor another spec.
 
-## Default shape
+## Default structure
 
 ```md
 # <Topic>
@@ -36,7 +36,7 @@ This is a starting point. Choose the sections and the form that fit the topic: p
 
 ## Use where it fits
 
-- Exact definitions where other parts depend on them (schemas, API shapes, events, config keys), as tables or short blocks.
+- Exact definitions where other parts depend on them (schemas, API requests and responses, events, config keys), as tables or short blocks.
 - What happens when things go wrong: invalid input, missing data, failures, limits reached.
 - What must never happen, and the constraints that apply: who may do something, privacy rules, performance limits, compatibility.
 - A short `Why:` next to a rule or decision that is not obvious. Mention a rejected alternative only where someone might bring it back.
@@ -45,7 +45,7 @@ This is a starting point. Choose the sections and the form that fit the topic: p
 
 ## Examples
 
-Two possible shapes, not templates. A behavior spec:
+Two examples, not templates. A behavior spec:
 
 ```md
 # Order paging

@@ -18,7 +18,7 @@ A plan defines what to do, and in which order, to reach a goal. A spec defines h
 - Write for a human reader: concise, precise, and easy to scan. Follow [plain-language](../plain-language/SKILL.md).
 - Before finishing, check that every part of the goal and the linked specs is covered by a step, and that no step goes beyond the goal.
 
-## Default shape
+## Default structure
 
 ```md
 # <What the plan achieves>
@@ -52,7 +52,7 @@ This is a starting point. Add, drop, or rename sections and step lines to fit th
 
 ## Examples
 
-Two possible shapes, not templates. A feature plan:
+Two examples, not templates. A feature plan:
 
 ```md
 # Add paging to the order list

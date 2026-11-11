@@ -89,7 +89,7 @@ For scripts that use the standard hr-manager-service DB setup, prefer this shape
 - initialize MikroORM with `runMigrations: false`
 - initialize Mongoose
 - keep database bootstrap in the top-level flow of `index.ts`
-- create the first PostgreSQL access boundary in `index.ts`
+- create the `EntityManager` in `index.ts`
 - run the main async function in `try`
 - log top-level errors
 - close resources in `finally`
@@ -257,7 +257,7 @@ For mutating scripts:
 - live writes are disabled by default until explicitly enabled
 - planned changes can be reviewed before live execution
 - if the script uses a change set, planning and review stay side-effect-free and nothing mutates outside the apply phase
-- the apply path is isolated and uses an execution strategy that fits the write shape and risk level
+- the code that applies changes is separate from the rest, and writes with `bulkWrite`, a loop, batches, or transactions, whichever fits the kind of write and its risk
 - partial failures are visible in logs or output and do not hide what did or did not apply
 - database connections and other resources still close cleanly on success and failure
 - re-running is safe, or the script clearly says it is intentionally one-time
