@@ -7,13 +7,18 @@ description: Guides how to write plans, the working documents that define what t
 
 A plan defines what to do, and in which order, to reach a goal. A spec defines how things should be and why. A plan is used up once the work is done, so anything that should outlast it (rules, decisions and their reasons) goes into a spec, never only into the plan.
 
-## Scope and lifecycle
+## Always
 
-- One shippable change per plan, such as one pull request. Split larger work into several plans that each leave the system working.
-- Self-contained: someone who missed the discussion can carry it out from the plan and the documents it links.
+- Self-contained: someone who missed the discussion can carry it out from the plan and the documents it links. State the goal and how the affected parts work today, and link the specs involved instead of restating them. When the change alters what a spec defines, updating the spec can be one of the steps.
+- Every step leaves the system working and ends with a check: a command and its expected result, or a behavior that can be observed.
+- Decide what the implementer would otherwise have to guess or would likely get wrong, and leave the rest to them. How much detail that takes depends on the risk of the change and on who carries it out. A plan longer than the code it describes has written the code.
+- Name the cases, rules, and values. "Handle edge cases", "add validation", and "TBD" are not steps. Use a name or signature identically in every step.
+- Never fill a gap with a guess. Turn what the implementer can find out into an investigation step that says what to check and what to do for each outcome. Put what only the user can decide under "Open questions" and name the steps it blocks. Mark a choice the user has not confirmed as `Assumption:`.
 - The plan is the working document. Tick a step off when its check passes. When a step turns out to be wrong, correct the remaining steps before continuing.
+- Write for a human reader: concise, precise, and easy to scan. Follow the `plain-language` skill.
+- Before finishing, check that every part of the goal and the linked specs is covered by a step, and that no step goes beyond the goal.
 
-## Structure
+## Default shape
 
 ```md
 # <What the plan achieves>
@@ -22,43 +27,32 @@ A plan defines what to do, and in which order, to reach a goal. A spec defines h
 One to three sentences: what is true when this plan is done.
 
 ## Context
-How the affected parts work today, links to the specs involved, how the work is committed, and any rule that applies to every step.
+How the affected parts work today, links to the specs involved, and anything that applies to every step, such as how the work is committed if that was agreed.
 
 ## Steps
-
 ### 1. <Imperative title>
-Files: <files the step touches>
-Depends on: step N      (only if it builds on an earlier step)
-
-- <Decision>
-- [ ] Done when: <command and expected result, or observable behavior>
+- <What to do and what is decided>
+- [ ] Done when: <check>
 
 ## Out of scope      (only what a reader would otherwise expect here)
 ## Open questions    (only while any exist)
 ```
 
-## Steps
+This is a starting point. Add, drop, or rename sections and step lines to fit the work. Steps run in the order written, unless a step is marked as independent of the others. A plan usually covers one shippable change, such as one pull request; split larger work into plans or phases that each leave the system working. Where the repository has its own conventions for plans, they win.
 
-- Cut the work into vertical slices: each step works end to end and leaves the system in a working state. Size a step to fit one fresh agent session and to carry its own check.
-- Put a refactor that makes the change easier in its own step, before the steps that build on it.
-- A mechanical change across the whole codebase (renaming a column, retyping a shared symbol) cannot be a vertical slice. Add the new form beside the old, move the callers over in batches, then delete the old form.
-- Fix what the implementer cannot decide alone: files, names, signatures, exact values, test cases. Leave code bodies to them, unless those decisions do not determine the result. A plan longer than the code it describes has written the code.
-- Name the cases, rules, and values. "Handle edge cases", "add validation", and "TBD" are not steps. Test cases cover the errors and edge cases the goal implies, not only the happy path, and each names input, action, and expected result.
-- Use a name or signature identically in every step. Steps without a `Depends on` line are independent and can run in parallel.
-- Add a short `Why:` where the approach is not obvious. Name a rejected alternative only where the implementer might be tempted by it. Mark a choice the user has not confirmed as `Assumption:`.
-- Mark a check only the user can do as `Done when (manual)`. The implementer stops there and asks the user.
-- Flag a step that cannot simply be undone (data migration, deleting data, calls to external systems), and state what must be true before it runs and how to get back.
+## Use where it fits
 
-## Other content
+- Vertical slices for feature work: each step delivers a small piece end to end, sized to fit one fresh agent session. A refactor that makes the change easier comes first, as its own step.
+- Expand and contract for a mechanical change across the whole codebase: add the new form beside the old, move the callers over in batches, then delete the old form.
+- Per step, the files it touches, signatures, exact values, and test cases, where the implementer could not get them right alone. Test cases cover the errors and edge cases the goal implies, not only the happy path.
+- A short `Why:` where the approach is not obvious. Name a rejected alternative only where the implementer might be tempted by it.
+- `Done when (manual)` for a check only the user can do. The implementer stops there and asks the user.
+- A flag on a step that cannot simply be undone (data migration, deleting data, calls to external systems), with what must be true before it runs and how to get back.
+- A structure diff, a file or call tree, pseudocode, or a Mermaid diagram where it explains a step or the current state better than prose.
 
-- Specs: link to the specs involved instead of restating them. When the change alters what a spec defines, updating the spec can be one of the steps.
-- Commits: state how the work is committed (per step, at the end, or left to the user), as agreed when the plan was made.
-- Unknowns: turn what the implementer can find out into an investigation step that says what to check and what to do for each outcome. Put what only the user can decide under "Open questions" and name the steps it blocks. Never fill a gap with a guess.
-- Visuals: use a structure diff, a file or call tree, pseudocode, or a Mermaid diagram where it explains a step or the current state better than prose.
-- Before finishing, check that every part of the goal and the linked specs is covered by a step, and that no step goes beyond the goal.
-- Style: write for a human reader, concise, precise, and easy to scan. Follow the `plain-language` skill.
+## Examples
 
-## Example
+Two possible shapes, not templates. A feature plan:
 
 ```md
 # Add paging to the order list
@@ -67,33 +61,39 @@ Depends on: step N      (only if it builds on an earlier step)
 Clients can page through a customer's orders as defined in [order-paging.md](../specs/order-paging.md).
 
 ## Context
-- `GET /customers/:id/orders` returns all orders in one response. The query is `listOrders(customerId)` in `src/orders/query.ts`, called from `src/orders/routes.ts`.
-- Commit after each step once its check passes.
+`GET /customers/:id/orders` returns all orders in one response. The query is `listOrders(customerId)` in `src/orders/query.ts`, called from `src/orders/routes.ts`. Commit after each step.
 
 ## Steps
-
 ### 1. Limit the page size
-Files: `src/orders/query.ts`, `src/orders/routes.ts`, and their test files
-
 - `listOrders(customerId, { limit })` returns at most `limit` orders, ordered by (`created_at`, `id`) descending.
-- The route reads `limit` from the query string, defaults to 25, and rejects values outside 1 to 100 with status 400.
-- Tests: default limit, limit 0 and 101 rejected, ordering.
+- The route reads `limit` from the query string, defaults to 25, and rejects values outside 1 to 100 with status 400. Both cases are tested.
 - [ ] Done when: `npm test orders` passes and `GET /customers/1/orders?limit=2` returns the two newest orders.
 
 ### 2. Continue from a cursor
-Files: same as step 1
-Depends on: step 1
-
-- `listOrders(customerId, { limit, after })` returns `{ items, nextCursor }`, and the route passes both through. `nextCursor` is absent on the last page.
+- `listOrders(customerId, { limit, after })` returns `{ items, nextCursor }`, and the route passes both through.
 - Assumption: the cursor is the base64 of `created_at|id` of the last order on the page.
 - Fetch `limit + 1` rows to detect the last page. Why: it avoids a second count query.
 - Tests: second page via `after`, last page without cursor, malformed cursor rejected with status 400.
-- [ ] Done when: `npm test orders` passes and following `nextCursor` from the first page returns the next orders without repeats.
+- [ ] Done when: `npm test orders` passes and following `nextCursor` returns the next orders without repeats.
+```
 
-### 3. Check a cursor whose order was deleted
-Depends on: step 2
+A data fix:
 
-- Delete the order a cursor points to, then request the next page with that cursor.
-- If the page continues after the deleted position, add the case as a test. If it fails or repeats orders, stop and report.
-- [ ] Done when: the outcome is covered by a test or reported.
+```md
+# Delete orders of closed test accounts
+
+## Goal
+The production database holds no orders that belong to closed test accounts.
+
+## Context
+About 4,000 such orders exist and nothing reads them. A deletion can only be reverted from the nightly backup.
+
+## Steps
+### 1. Export the affected orders
+- Select the orders whose account has `is_test = true` and `closed_at` set, and export them to a CSV file.
+- [ ] Done when (manual): the user has looked at the export and confirmed the selection.
+
+### 2. Delete the orders
+- Cannot be undone. Run the deletion only after step 1 is confirmed and last night's backup is verified. Use the same selection, in one transaction.
+- [ ] Done when: the selection from step 1 returns no rows.
 ```
