@@ -5,7 +5,7 @@ description: Guides how to write specs, the living documents that define how an 
 
 # Writing specs
 
-A spec defines how something should be and why: behavior, a workflow, a data contract, or a technical aspect such as architecture or service setup. A plan defines what to do to get there. Steps, order of work, migration, and progress belong in a plan, never in a spec.
+A spec defines how something should be and why: behavior, a workflow, a data contract, or a technical aspect such as architecture or service setup. A plan defines what to do to get there (see [writing-plans](../writing-plans/SKILL.md)). Steps, order of work, migration, and progress belong in a plan, never in a spec.
 
 ## Always
 
@@ -14,8 +14,8 @@ A spec defines how something should be and why: behavior, a workflow, a data con
 - Each fact has one home. Link to the spec that owns it instead of repeating it.
 - Include only what someone has to agree to. If a detail could change without anyone needing to agree, leave it out. This usually excludes file paths, function names, and implementation code, but not a structure or name that the spec itself defines.
 - State rules as present-tense facts that someone can check ("Sessions end after 30 minutes"). Words such as "fast" or "robust" need a number or a condition. Use "should" only for a recommendation, and name the exception.
-- Never fill a gap with a guess. List undecided points under "Open questions", with your proposed answer where you have one, and remove each one when it is resolved.
-- Write for a human reader: concise, precise, and easy to scan. Follow the `plain-language` skill. Use one term per concept and explain project-specific terms on first use.
+- Never fill a gap with a guess. List undecided points under "Open questions", with your proposed answer where you have one, and remove each one when it is resolved. When too much is undecided to write the spec, run a [grilling](../grilling/SKILL.md) session first.
+- Write for a human reader: concise, precise, and easy to scan. Follow [plain-language](../plain-language/SKILL.md). Use one term per concept and explain project-specific terms on first use.
 - Before finishing, check that someone could plan and build from the spec without asking the author, that it is no longer than that requires, and that it contradicts neither itself nor another spec.
 
 ## Default shape
@@ -41,7 +41,7 @@ This is a starting point. Choose the sections and the form that fit the topic: p
 - What must never happen, and the constraints that apply: who may do something, privacy rules, performance limits, compatibility.
 - A short `Why:` next to a rule or decision that is not obvious. Mention a rejected alternative only where someone might bring it back.
 - A concrete example where a rule can be misread, for instance at boundary values or with ordering.
-- A Mermaid diagram or a few lines of pseudocode where they explain an interaction, flow, or rule better than prose.
+- A Mermaid diagram or a few lines of pseudocode, in the forms shown in [show-me](../show-me/SKILL.md), where they explain an interaction, flow, or rule better than prose.
 
 ## Examples
 
