@@ -22,22 +22,18 @@ Write one commit subject from the diff:
 
 `<type>: <imperative description>`
 
-No scope. Write the entire subject in lowercase, including names and acronyms
-(e.g. `add api client for github`, not `add API client for GitHub`).
+Format:
+- Allowed types: `feat`, `fix`, `refactor`, `perf`, `docs`, `test`, `chore`, `build`, `ci`, `style`, `revert`.
+- No scope.
+- Write the entire subject in lowercase, including proper nouns and acronyms (e.g. `feat: add api client for github`, not `feat: add API client for GitHub`).
+- No trailing punctuation, emojis, first-person language, AI attribution (including `Co-Authored-By` trailers), or vague filler (e.g. "update files", "misc changes").
 
-Choose the best-fitting type: `feat`, `fix`, `refactor`, `perf`, `docs`, `test`,
-`chore`, `build`, `ci`, `style`, or `revert`.
+Content:
+- Summarize the main intent concretely from the diff; if several files changed, focus on the primary purpose rather than listing files.
+- Name the affected app, module, or component when needed for the subject to stand on its own; use the changed paths and diff to identify it.
+- Aim for 50–72 characters, preferring clarity over strict truncation.
 
-Describe the main change concretely. Name the affected app or component when
-needed to make the subject understandable on its own; use the changed paths
-and diff to identify it.
-
-Keep the subject concise and easy to scan, but do not sacrifice useful context
-to meet a character count. No trailing period, filler, first-person language,
-emojis, or AI attribution, including `Co-Authored-By` trailers.
-
-Output only the subject, on one line, without quotes, Markdown formatting,
-a body, or extra text.
+Output only the single subject line: no body, trailers, quotes, Markdown, or commentary.
 
 ## Examples
 
