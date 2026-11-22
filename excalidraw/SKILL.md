@@ -18,7 +18,7 @@ Commands below omit that prefix. Results are JSON on stdout, except `describe` (
 ## Canvas
 
 - **Check:** `status`. `"running": true` means the backend is up; `browserClients` counts open browser tabs. It exits 3 when no canvas is running, which is a normal answer, not an error. Use the URL the CLI reports; respect an existing `EXPRESS_SERVER_URL` or `--url`.
-- **herdr canvas pane:** the herdr Excalidraw pane runs a canvas on a port in 7600–7699, shown in its title. Address it with `EXCALIDRAW_NO_AUTOSTART=1 mcp-excalidraw-server --url http://127.0.0.1:<port> …`; exit 3 means the pane was closed, so tell the user instead of starting a canvas.
+- **Herdr panel canvas:** a canvas from Herdr's Excalidraw panel runs on a port in 7700–7799 that the user names or pastes as a URL. Address it with `EXCALIDRAW_NO_AUTOSTART=1 mcp-excalidraw-server --url http://127.0.0.1:<port> …`; exit 3 means it was stopped, so tell the user instead of starting a canvas.
 - **Start:** `start`. Canvas commands also autostart the backend.
 - **Stop:** `stop`, only when the user asks. The scene and snapshots live in memory, so export first.
 
