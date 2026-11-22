@@ -8,5 +8,6 @@ description: >
 
 # Linear
 
-- Default team for task creation: **Vibing Vipers** (`VV`)
+- Default team for task creation: **Employee Data Management** (`EDM`)
 - Never set labels on new tasks unless the user explicitly asks
+- Draft a ticket with the `linear-draft` skill before creating it
