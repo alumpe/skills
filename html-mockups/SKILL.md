@@ -8,35 +8,38 @@ description: Creates self-contained HTML mockups for features and UI elements. U
 ## Format and scope
 
 - Create a single self-contained `.html` file per mockup: the whole design, all variants, all CSS, all JavaScript, and all assets (for example, SVG icons) live in that one file, so it can be sent to others and opened anywhere. Do not require a build step, framework, CDN, or external resource, and do not split a mockup into multiple pages or an index page linking to subpages.
-- Use realistic sample content and enough interaction to demonstrate the intended behavior. Keep the scope to a mockup, not a production implementation.
+- Save the file to the path the user specifies. If no path is given, save it in a temporary or scratch location outside tracked repository files.
+- Use realistic sample content (names, dates, amounts) with no placeholder text like Lorem ipsum, and include enough interaction to demonstrate the intended behavior. Keep the scope to a mockup, not a production implementation.
 - Use semantic HTML: `<button>` for clickable actions, `<label>` for inputs, alt text for images. Keep keyboard focus working and keep text/background contrast readable.
 - Design for desktop screens only (roughly 1280×800 and up). Do not add tablet or mobile layouts unless the task explicitly asks for them.
 
 ## Design exploration
 
 - When the task leaves room for exploration, try a few meaningfully different designs. Vary layout, composition, hierarchy, density, or styling, not just colors. For example, compare a compact table with grouped cards. Do not force alternatives when the user asks for a specific design or a small adjustment.
-- Make alternatives easy to compare: put all variants in the mockup's single file, with clear labels and the same representative content.
+- Make alternatives easy to compare: clearly label each variant and use the same representative content across them.
 
 ## Design baseline
 
-- Use the design system in [design-tokens.md](design-tokens.md) (colors, radii, shadows, gradient borders) as the default styling baseline for product mockups, unless the task asks for a specific different look.
-- Look at the reference screenshot in [assets/components-overview.png](assets/components-overview.png) for visual inspiration: it shows how buttons, inputs, badges, chips, tables, cards, and other components look when styled with these tokens.
-- Write modular, maintainable CSS: define all shared values (colors, radii, shadows, spacing, font sizes) as CSS variables on `:root` and reference the variables everywhere instead of repeating literal values. Structure rules around reusable classes or component-scoped blocks rather than one-off selectors, so a change to a single variable or rule propagates consistently through the whole mockup.
-- Recreate the appearance and behavior of any component with plain HTML, CSS, and minimal JavaScript. Do not use component libraries or other external dependencies.
+- Use the tokens in [design-tokens.md](design-tokens.md) and component styles in [component-recipes.md](component-recipes.md) as the default styling baseline for product mockups, unless the task asks for a specific different look.
+- Open and inspect the reference screenshot in [assets/components-overview.png](assets/components-overview.png) when using the default baseline: it shows how buttons, inputs, badges, chips, tables, cards, and other components look when styled with these tokens.
+- Write modular, maintainable CSS: use the variables from [design-tokens.md](design-tokens.md) instead of ad-hoc colors, radii, or shadows, add `:root` variables for extra values that repeat across the mockup, and structure rules around reusable component classes rather than one-off selectors.
+- Recreate the appearance and behavior of any component with plain HTML, CSS, and JavaScript.
+
+## Mock data and state
+
+Follow [mock-data.md](mock-data.md) in two steps, depending on what the mockup needs:
+
+- **The same records appear in more than one section or variant** (employees, shifts, orders): keep all sample data once in a JavaScript object and draw every place from it; the HTML markup holds no data of its own. This applies to static mockups too, and guarantees that all design variants show the same content.
+- **An interaction creates, changes, or deletes data**: additionally change the data only through action functions that then redraw. Never patch the page directly from an event handler (appending a row, bumping a counter), because every other place showing that data is then left out of date. The mockup then behaves as if a real backend were attached: creating an employee makes them appear in the list, the counters, and every other variant.
+
+A small static exploration without repeated records, such as comparing three button styles, stays plain HTML.
 
 ## Verification and handoff
 
-- Load the [agent-browser skill](../agent-browser/SKILL.md) and use it to open the files and check layout and any interactions before handing them over.
-- If you cannot check them, state that limitation. Include the file paths in the handoff.
+Load the [agent-browser skill](../agent-browser/SKILL.md) and confirm these checks before handing off:
 
-## Final checklist
-
-Before handing off, confirm:
-
-- [ ] Everything lives in one self-contained `.html` file: all variants, inline CSS, JavaScript, and assets — no build step, CDN, external resource, or linked subpages.
-- [ ] The styling uses the design tokens from [design-tokens.md](design-tokens.md): colors, radii, shadows, and fonts come from the CSS variables defined there, not from ad-hoc values. Shared values are defined once on `:root` and reused — no repeated literal values scattered through the CSS.
-- [ ] Sample content is realistic — names, dates, amounts — with no placeholder text like Lorem ipsum.
-- [ ] The mockup was opened in a browser via the agent-browser skill and iterated on with screenshots until the layout and interactions look correct — not just written once and handed over.
-- [ ] The result was compared side by side with the reference screenshot in [assets/components-overview.png](assets/components-overview.png): colors, radii, shadows, and overall component styling look similar to the reference design.
-- [ ] All demonstrated interactions work, interactive elements are semantic HTML with visible focus states, and variants are labeled and use the same representative content.
-- [ ] The handoff includes the file path and states any limitations, such as anything that could not be verified.
+- [ ] Opened the mockup at a desktop viewport (for example, 1440×900 or 1280×800) and iterated with screenshots until layout and interactions look right, rather than handing over the first render.
+- [ ] If using the default design baseline, compared the rendered mockup side by side with [assets/components-overview.png](assets/components-overview.png) to confirm colors, radii, borders, shadows, and spacing match (typeface and weight differences are expected when the system font falls back from Roboto).
+- [ ] If the mockup has data-changing interactions, performed every data-changing action in the browser and verified that every other place showing that data (lists, counters, detail panels, other variants) updated.
+- [ ] Checked that demonstrated interactions and visible keyboard focus states work as expected.
+- [ ] Included the file path in the handoff, noted if it is in a temporary location, and stated any limitations (such as anything that could not be verified in a browser).

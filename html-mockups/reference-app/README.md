@@ -27,6 +27,10 @@ Do this by hand, now and then, or when the foundation adds or changes components
    and save it over `../assets/components-overview.png`.
 4. Check [../design-tokens.md](../design-tokens.md) against the light-theme `body` block in
    `node_modules/@gastromatic/themes/dist/themes.css`. The file is a curated subset of those
-   variables: update changed values, and add new variables only if mockups need them.
-   `--shadow-modal`, `--border-gradient`, and `--font-family` don't exist in the theme. They
-   come from component styles, so check them against the components.
+   variables: update changed values, and add new variables only if mockups need them. The
+   variables under the "Mockup helpers" comment (`--border-radius-pill`, `--shadow-*`,
+   `--font-family`) come from component styles rather than the theme.
+5. Check [../component-recipes.md](../component-recipes.md) against changed components in
+   `~/Work/gastromatic-foundation/packages/components/src` (especially the copyable CSS for
+   buttons, badges, form fields, cards, and tables) and update any changed colors, sizes,
+   radii, borders, or states.
