@@ -103,7 +103,7 @@ const GroupContent = styled(Stack)`
   }
 `;
 
-const GroupTitle = styled(Headline)`
+const GroupTitle = styled.h3`
   font-size: 12px;
   line-height: 16px;
   font-weight: 600;
@@ -174,7 +174,7 @@ function Row({ children, ...props }) {
 function Group({ title, children }) {
   return (
     <GroupContent gap={8}>
-      <GroupTitle level={3}>{title}</GroupTitle>
+      <GroupTitle>{title}</GroupTitle>
       {children}
     </GroupContent>
   );
