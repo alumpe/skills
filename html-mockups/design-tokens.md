@@ -3,8 +3,10 @@
 Light-theme tokens from `@gastromatic/themes` plus the core visual mechanics (surfaces,
 gradient borders, typography, spacing, and focus states) shared across mockups. Copy the
 `:root`, `body`, and `.outlined` blocks into a mockup, then use
-[component-recipes.md](component-recipes.md) and
-[assets/components-overview.png](assets/components-overview.png) to build components.
+[component-recipes.md](component-recipes.md) and the reference screenshots
+([assets/components-basics.png](assets/components-basics.png),
+[assets/components-patterns.png](assets/components-patterns.png),
+[assets/components-filter-panel.png](assets/components-filter-panel.png)) to build components.
 
 ## 1. Base tokens
 
@@ -23,6 +25,7 @@ gradient borders, typography, spacing, and focus states) shared across mockups. 
   --primary-900: #0E3734; /* primary buttons, dark fills */
 
   /* Secondary (soft green for selected states and secondary buttons) */
+  --secondary-50: #F4FEF3;
   --secondary-100: #E7FBDD;
   --secondary-200: #D1FCCD;
   --secondary-300: #BAF5C8;
@@ -68,6 +71,11 @@ gradient borders, typography, spacing, and focus states) shared across mockups. 
   --purple-700: #8275BB;
   --purple-800: #625299;
   --purple-900: #4A3F75;
+
+  /* First three chart series */
+  --custom-periwinkle-mist: #9A92CE;
+  --custom-skyline-blue: #73A5ED;
+  --custom-garden-mint: #98C8A6;
 
   /* Surfaces (higher layer = slightly cooler tint) */
   --layer-0: #ffffff;  /* default cards, inputs, tables, chips, modals, popovers */
@@ -129,7 +137,7 @@ body {
 The library keeps contrast soft and cool-toned rather than relying on heavy drop shadows:
 
 - Page canvas: `--neutral-50` behind cards (or `--layer-0` for full-bleed white layouts).
-- Cards: `--layer-0` by default, or `--layer-1` on a `--neutral-50` canvas (as in the showcase).
+- Cards: `--layer-0` by default, or `--layer-1` on a `--neutral-50` canvas (as in the reference screenshots).
 - Inputs, tables, chips, popovers, and modals: `--layer-0`.
 - Table headers and subtle hover fills: `--layer-2`.
 - Hairline borders inside tables: `--layer-3`.

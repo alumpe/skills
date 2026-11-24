@@ -4,7 +4,10 @@ Plain HTML and CSS recipes for recreating `@gastromatic/components` in self-cont
 mockups. Place the `:root`, `body`, and `.outlined` blocks from
 [design-tokens.md](design-tokens.md) before these rules so component classes can override
 `--surface`, `--border-gradient`, and `border-color`. Cross-check rendered components
-against [assets/components-overview.png](assets/components-overview.png).
+against [assets/components-basics.png](assets/components-basics.png) (basic components and
+their variants), [assets/components-patterns.png](assets/components-patterns.png) (tables,
+lists, overlays, calendar, charts, chat), and
+[assets/components-filter-panel.png](assets/components-filter-panel.png) (open filter panel).
 
 ## Core components (copyable CSS)
 
@@ -80,7 +83,7 @@ height `36px`. Icon-only buttons set `width` equal to `height` with `padding: 0`
 | 40 | 40px | `0 14px` | 16px | 20px |
 | 44 | 44px | `0 16px` | 16px | 20px |
 
-- **Icon action (`Action`):** transparent button (`height: 24px`, `padding: 0 4px`, `border-radius: 8px`, `border: none`, `background: transparent`). Text actions use `font-weight: 500`, `text-decoration: underline`. Destructive actions use `--danger-600` / `--danger-700`.
+- **Action:** transparent 24px button, `padding: 0 4px`, `border-radius: 8px`. Labels are underlined at weight 500; icons can stand alone. Colors: `--text-black` (default), `--neutral-600`, `--danger-700`, `--primary-700`, `--purple-800` (AI), or `--text-white`. Disabled actions use `--neutral-400` without an underline.
 - **Close (`Close`):** `16px` or `24px` circle (`border-radius: 50%`), `--neutral-100` fill, `--neutral-600` icon; hover `--neutral-300` fill, `--neutral-700` icon.
 
 ### Badges
@@ -191,7 +194,7 @@ textarea.input { height: auto; min-height: 80px; resize: vertical; }
 ### Cards
 
 Cards default to `--layer-0` and use `--layer-1` on a `--neutral-50` canvas (as in the
-showcase). They have no resting shadow and do not lift on hover; clickable cards step up
+reference screenshots). They have no resting shadow and do not lift on hover; clickable cards step up
 one surface layer instead.
 
 ```css
@@ -289,9 +292,38 @@ Wrap `<table>` in a rounded, gradient-bordered container with `overflow: hidden`
   - Default: `--neutral-100` circle, `--text-black` info icon, `--layer-border-gradient`.
   - Expressive: solid `--primary-900` fill, `--secondary-200` text and icon circle.
 - **Modal:** centered over `background: var(--backdrop); backdrop-filter: blur(2px)`. Panel uses `--layer-0`, `border-radius: var(--border-radius-16)`, `box-shadow: var(--shadow-modal)`, default `width: 504px`, `max-height: 90vh`, header with title and 24px `Close`, scrollable body, and right-aligned footer buttons.
-- **Popover and Menu:** `.outlined` (`--layer-0`), `border-radius: var(--border-radius-12)`, `box-shadow: var(--shadow-raised)`. Menu uses `padding: 8px`; items are `height: 36px`, `padding: 8px`, `border-radius: 20px`, `gap: 8px`, hover `--neutral-50`, selected `--secondary-200` with `--primary-600` text (danger items: `--danger-700` text, `--danger-50` hover).
+- **Popover and Menu:** the popover supplies the `.outlined` panel (`--layer-0`, `24px` radius, `16px` default padding, `--shadow-raised`). The inline menu shown in Patterns has no panel or padding of its own. Items have `min-height: 36px`, `8px` padding and gap, and a `20px` radius. Default items hover to `--neutral-50`; selection adds `--secondary-200` fill and a `1px` `--primary-500` border. Danger items use `--danger-700` text and `--danger-50` hover; disabled items use `--neutral-400`. Group labels are `14px/600` in `--neutral-600`; add a divider explicitly where needed.
 - **Tooltip:** `background: var(--text-black)`, `color: var(--text-white)`, `padding: 6px 12px`, `border-radius: 6px`, `font-size: 12px`, `line-height: 16px`, `box-shadow: var(--shadow-tooltip)`.
 - **Skeleton:** `background: var(--neutral-100)`, `border-radius: var(--border-radius-8)` (or `50%` for circles).
+- **Progress:** pill track in `--neutral-200` with a `--primary-500` fill, `6px` high by default. Stacked segments use shades of one color (`--primary-700`, `--primary-500`, `--primary-300`). The steps variant is a row of equal `6px` pills with `4px` gaps, done steps filled. The ring variant is `40px` wide with a `4px` stroke by default and can hold a short centered label.
+- **Drawer:** the floating panel defaults to `400px` wide with an `8px` viewport inset, `16px` radius, gradient border, and `--shadow-modal`. It reads as white (`--layer-0`) throughout. Header and footer have `24px` padding; the scrolling body has `0 24px`. The header has a `20px/700` title and a 24px `Close`. The 300px inline drawer in Patterns keeps `--layer-0` but has square corners, no shadow, and a `1px` `--neutral-200` inner divider.
+- **Filter chips and selection panel:** an applied filter is a 32px chip (`Group: value, value`, `13px`, `font-weight: 500`, leading 16px icon, `Close` button), followed by a round neutral 28px `+` button. The panel it opens is `.outlined` (`--layer-0`), `width: 320px`, `padding: 8px`, `border-radius: 20px`, `box-shadow: var(--shadow-raised)`: a search row, a `12px` breadcrumb (`Alle › Group`), a select-all row (`font-weight: 500`, mixed checkbox when partly selected), one checkbox row per option, and a full-width `36px` primary button to confirm. See [assets/components-filter-panel.png](assets/components-filter-panel.png).
+- **Upload:** drop area with `1px dashed var(--neutral-300)`, `border-radius: var(--border-radius-16)`, `padding: 24px`, `min-height: 120px`, a centered file illustration and one line of text. Border turns `--primary-500` while dragging over it and `--danger-400` on error.
+
+### Lists and disclosure
+
+- **ListCard group:** optional `12px/500` `--neutral-600` title above one `.outlined` container (`16px` radius, no padding). Rows have `8px` padding, `4px` gap, a `16px` radius, a 20px leading icon, a `14px` label, and a trailing value or chevron. Default active rows use `--layer-3` with `--layer-border-gradient`. Warning, danger, and primary rows use `--warning-100`, `--danger-50`, and `--secondary-50`; when active they use `--warning-100`, `--danger-100`, and `--secondary-200` with the matching border gradient. Disabled rows use `opacity: 0.5`.
+- **ListTable:** each group has one `.outlined` `--layer-1` container with `16px` corners, `16px` column gaps, and inset row dividers. Row padding defaults to `12px`; Patterns uses `8px 12px` and a `500` weight for the shift name. The optional status pill is fixed at `8×40px`: `--primary-500` for success, `--warning-700` for warning, `--danger-500` for error, or `--neutral-300` for default. Selection replaces the glass column headers with a count and 28px action buttons; the header checkbox is mixed when only some rows are selected. The trailing `…` opens the row menu.
+- **Accordion:** each item is a trigger row (`padding: 12px 0`, `14px`, `font-weight: 500`, chevron at the right that flips when open) with its content below; items are separated by `1px solid var(--neutral-100)`.
+
+### Calendar
+
+- Month label centered (`14px`, `font-weight: 600`) between previous/next month and year icon buttons, then a weekday row (`12px`, `--neutral-800`) and optional week numbers (`11px`, `--neutral-500`) in a leading column.
+- Days are circles of `28`, `36`, or `44px` with `2px` gaps. Numbers are `12px` in 28px cells and `14px` in larger cells. Selected days and every day of a selected range: `--secondary-200` fill, `1px solid var(--primary-500)`, `font-weight: 500`. Today: `--primary-500` text, `font-weight: 600`. Marked days carry a small colored dot under the number.
+
+### Chat
+
+- **User message:** right-aligned bubble, `background: var(--primary-900)`, `color: var(--secondary-200)`, `padding: 12px 16px`, `border-radius: 16px 16px 4px 16px`, `14px` text with `line-height: 1.6`.
+- **Assistant message:** no bubble. A name row (sparkle icon and name in `--purple-800`, `font-weight: 500`) sits above plain `14px` text; suggested replies are neutral buttons in a wrapping row below the message. The narrow drawer shows them on separate lines.
+- **Input:** one pill-shaped `.outlined` field with the send icon button inside its right edge.
+
+### Charts
+
+- The default chart palette starts with the theme tokens `--custom-periwinkle-mist` (first series and bars), `--custom-skyline-blue`, and `--custom-garden-mint`. Set explicit colors when a chart should follow the product palette, for example `--primary-500` against `--neutral-700` for actual versus plan.
+- **Bar chart:** bars with rounded tops, value above each bar (`16px`, `font-weight: 600`), category labels below (`14px`, `--neutral-600`), no axis lines.
+- **Area and line chart:** thin line per series over a vertical gradient fill that fades out, dashed horizontal grid lines, `14px` axis labels.
+- **Donut and pie:** segments separated by a `--layer-0` stroke (`4px` by default) with rounded ends, values on the ring (`12px`, `font-weight: 600`).
+- **Legend:** centered below the chart, one small dot and a `12px` `--neutral-600` label per series. Always show it, or label the series directly.
 
 ### Avatars and dividers
 

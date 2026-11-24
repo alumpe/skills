@@ -4,6 +4,7 @@
   "workspaces": {
     "": {
       "dependencies": {
+        "@gastromatic/clock-time-date": "^2.2.3",
         "@gastromatic/components": "^2.8.0",
         "@gastromatic/icons": "^1.0.46",
         "@gastromatic/themes": "^1.0.27",
