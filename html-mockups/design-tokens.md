@@ -37,8 +37,8 @@ gradient borders, typography, spacing, and focus states) shared across mockups. 
   --neutral-400: #A6C1D1;
   --neutral-500: #90B2C6; /* placeholders, input focus border */
   --neutral-600: #83A2B4; /* subtle icons, close buttons */
-  --neutral-700: #667E8D; /* secondary text, optional labels, group titles */
-  --neutral-800: #4F626D; /* table headers, helper text, disabled input text */
+  --neutral-700: #667E8D; /* optional labels, group titles */
+  --neutral-800: #4F626D; /* muted text, table headers, helper text, disabled input text */
 
   /* Danger */
   --danger-50: #ffebeb;
